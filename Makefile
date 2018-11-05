@@ -6,13 +6,13 @@
 #    By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/10/30 14:53:21 by ljoly             #+#    #+#              #
-#    Updated: 2018/10/30 14:55:25 by ljoly            ###   ########.fr        #
+#    Updated: 2018/11/05 15:39:48 by ljoly            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_nm
 
-SRC = main.c
+SRC = main.c error.c
 
 SRC_PATH = ./src/
 
