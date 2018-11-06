@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/02 14:22:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/05 15:42:00 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/05 17:42:14 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,11 @@ typedef enum	e_sys
 
 typedef enum	e_usage
 {
+	ARG,
     MAGIC,
 }				t_usage;
 
-int			err_sys(t_sys err_code, const char *arg);
-int			err_usage(t_usage err_code);
+void		err_sys(t_env *e, t_sys err_code, const char *arg);
+void		err_usage(t_usage err_code);
 
 #endif

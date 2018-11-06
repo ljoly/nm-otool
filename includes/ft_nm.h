@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/30 14:31:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/10/30 14:48:57 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/05 17:33:45 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,10 @@
 # include <mach-o/loader.h>
 # include <mach-o/nlist.h>
 # include <sys/stat.h>
+
+typedef struct	s_env
+{
+	int			exit_status;
+}				t_env;
 
 #endif

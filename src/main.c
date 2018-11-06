@@ -6,11 +6,12 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/30 14:31:10 by ljoly             #+#    #+#             */
-/*   Updated: 2018/10/31 16:00:55 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/05 17:48:15 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
+#include "error.h"
 
 void			print_output(int nsyms, int symoff, int stroff, void *ptr)
 {
@@ -71,36 +72,48 @@ void			ft_nm(char *ptr)
 
 int				main(int ac, char **av)
 {
+	int			i;
+	t_env		e;
     int			fd;
     char		*ptr;
 	struct stat	buf;
 
-	(void)av;
     if (ac < 2)
     {
-        ft_putendl_fd("need arg", STDERR);
+		err_usage(ARG);
         return (EXIT_FAILURE);
     }
-	if ((fd = open(av[1], O_RDONLY)) < 0)
+	i = 1;
+	while (i < ac)
 	{
-		ft_putendl_fd("open error", STDERR);
-		return (EXIT_FAILURE);
+		// debug only: print at the end of the program
+		// if (ac > 2)
+		// {
+		// 	ft_printf("\n%s: \n", av[i]);
+		// }
+		//
+		if ((fd = open(av[i], O_RDONLY)) < 0)
+		{
+			err_sys(&e, OPEN, av[i]);
+		}
+		if (fstat(fd, &buf) < 0)
+		{
+			err_sys(&e, FSTAT, av[i]);
+		}
+		if ((ptr = mmap(0, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
+		{
+			ft_putendl_fd("mmap error", STDERR);
+			return (EXIT_FAILURE);
+		}
+		ft_nm(ptr);
+		if (munmap(ptr, buf.st_size) < 0)
+		{
+			ft_putendl_fd("munmap error", STDERR);
+			return (EXIT_FAILURE);
+		}
+		printf("FD = %d\n", fd);
+		close(fd);
+		i++;
 	}
-	if (fstat(fd, &buf) < 0)
-	{
-		ft_putendl_fd("fstat error", STDERR);
-		return (EXIT_FAILURE);
-	}
-	if ((ptr = mmap(0, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
-	{
-		ft_putendl_fd("mmap error", STDERR);
-		return (EXIT_FAILURE);
-	}
-	ft_nm(ptr);
-	if (munmap(ptr, buf.st_size) < 0)
-	{
-		ft_putendl_fd("munmap error", STDERR);
-		return (EXIT_FAILURE);
-	}
-    return (EXIT_SUCCESS);
+    return (e.exit_status);
 }
