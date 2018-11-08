@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:58:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/08 14:19:11 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/08 19:03:13 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,7 @@ void			handle_arg(t_env *e, char *arg, int *fd)
 		err_sys(e, MMAP, arg);
 		return ;
 	}
-	if (!handle_magic(e->p))
-	{
-		err_usage(e, FORMAT, arg);
-	}
+	handle_magic(e, arg);
 	if (munmap(e->p, buf.st_size) < 0)
-	{
 		err_sys(e, MUNMAP, arg);
-		return ;
-	}
 }

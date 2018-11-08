@@ -6,24 +6,39 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:57:52 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/06 16:04:15 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/08 19:54:34 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
+#include "error.h"
 
-t_bool				handle_magic(char *p)
+static t_magic		g_nums[] = {{MH_MAGIC_64, NOSWAP, handle_64},
+	{MH_CIGAM_64, SWAP, handle_64}};
+	// {MH_MAGIC, FALSE, handle_32},
+	// {MH_CIGAM, TRUE, handle_32},
+
+void				handle_magic(t_env *e, char *arg)
 {
-	unsigned int	magic_number;
+	unsigned int	magic;
+	t_bool			found;
+	unsigned long	i;
 
-	magic_number = *(int *)p;
-	if (magic_number == MH_MAGIC_64)
+	magic = *(int *)e->p;
+	found = FALSE;
+	i = 0;
+	while (i < sizeof(g_nums) / sizeof(*g_nums))
 	{
-		handle_64(p);
+		if (magic == g_nums[i].num)
+		{
+			g_nums[i].cmd(e->p, g_nums[i].swap);
+			found = TRUE;
+			break ;
+		}
+		i++;
 	}
-	else
+	if (!found)
 	{
-		return (FALSE);
+		err_usage(e, FORMAT, arg);
 	}
-	return (TRUE);
 }

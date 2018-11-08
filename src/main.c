@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/30 14:31:10 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/06 16:22:52 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/08 19:57:37 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int				main(int ac, char **av)
 		// debug only: print at the end of the program
 		if (ac > 2)
 		{
-			ft_printf("\n%s: \n", av[i]);
+			printf("\n%s: \n", av[i]);
 		}
 		//
 		handle_arg(&e, av[i], &fd);
