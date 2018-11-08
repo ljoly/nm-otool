@@ -1,32 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_nm.h                                            :+:      :+:    :+:   */
+/*   handle_magic.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/30 14:31:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/06 16:13:12 by ljoly            ###   ########.fr       */
+/*   Created: 2018/11/06 15:57:52 by ljoly             #+#    #+#             */
+/*   Updated: 2018/11/06 16:04:15 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_NM_H
-# define FT_NM_H
+#include "ft_nm.h"
 
-# include "libft.h"
-# include <sys/mman.h>
-# include <mach-o/loader.h>
-# include <mach-o/nlist.h>
-# include <sys/stat.h>
-
-typedef struct	s_env
+t_bool				handle_magic(char *p)
 {
-	char		*p;
-	int			exit_status;
-}				t_env;
+	unsigned int	magic_number;
 
-void			handle_arg(t_env *e, char *arg, int *fd);
-t_bool			handle_magic(char *p);
-void			handle_64(char *p);
-
-#endif
+	magic_number = *(int *)p;
+	if (magic_number == MH_MAGIC_64)
+	{
+		handle_64(p);
+	}
+	else
+	{
+		return (FALSE);
+	}
+	return (TRUE);
+}
