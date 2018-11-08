@@ -6,13 +6,13 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:53:59 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/06 16:50:06 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/08 13:47:46 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 
-static void			print_output(int nsyms, int symoff, int stroff, void *p)
+static void			print(int nsyms, int symoff, int stroff, void *p)
 {
 	int				i;
 	char			*stringtable;
@@ -43,8 +43,8 @@ void				handle_64(char *p)
 		if (lc->cmd == LC_SYMTAB)
 		{
 			sym = (struct symtab_command *)lc;
-			printf("nm symbols = %d\n", sym->nsyms);
-			print_output(sym->nsyms, sym->symoff, sym->stroff, p);
+			// printf("nm symbols = %d\n", sym->nsyms);
+			print(sym->nsyms, sym->symoff, sym->stroff, p);
 			break ;
 		}
 		lc = (void *)lc + lc->cmdsize;

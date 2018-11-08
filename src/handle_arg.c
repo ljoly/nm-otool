@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:58:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/06 16:23:05 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/08 14:19:11 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,12 @@ void			handle_arg(t_env *e, char *arg, int *fd)
 	if (S_ISDIR(buf.st_mode))
 	{
 		err_usage(e, DIR, arg);
-		return;
+		return ;
+	}
+	if (!buf.st_size)
+	{
+		err_usage(e, FORMAT, arg);
+		return ;
 	}
 	if ((e->p = mmap(0, buf.st_size, PROT_READ, MAP_PRIVATE, *fd, 0))
 		== MAP_FAILED)
@@ -40,7 +45,7 @@ void			handle_arg(t_env *e, char *arg, int *fd)
 	}
 	if (!handle_magic(e->p))
 	{
-		err_usage(e, MAGIC, arg);
+		err_usage(e, FORMAT, arg);
 	}
 	if (munmap(e->p, buf.st_size) < 0)
 	{
