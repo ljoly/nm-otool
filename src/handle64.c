@@ -6,13 +6,13 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:53:59 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/08 19:57:34 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/09 17:28:19 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 
-static char			get_symtype(uint8_t type)
+static char			get_symtype(uint8_t type, uint8_t n_sect)
 {
 	char			t;
 
@@ -23,6 +23,7 @@ static char			get_symtype(uint8_t type)
 	}
 	else if (t == N_SECT)
 	{
+		printf("n_sect = %d\n", n_sect);
 		t = 't';
 	}
 	if (type & N_EXT)
@@ -35,22 +36,22 @@ static char			get_symtype(uint8_t type)
 static void			print(int nsyms, int symoff, int stroff, void *p)
 {
 	int				i;
-	char			*stringtable;
-	struct nlist_64	*array;
+	char			*strtable;
+	struct nlist_64	*symtable;
 	uint8_t			symtype;
 
-	array = p + symoff;
-	stringtable = p + stroff;
+	symtable = p + symoff;
+	strtable = p + stroff;
 	i = 0;
 	while (i < nsyms)
 	{
-		symtype = get_symtype(array[i].n_type);
+		symtype = get_symtype(symtable[i].n_type, symtable[i].n_sect);
 		if (symtype == 'u' || symtype == 'U')
 		{
-			printf("%18c %s\n", symtype, stringtable + array[i].n_un.n_strx);
+			printf("%18c %s\n", symtype, strtable + symtable[i].n_un.n_strx);
 		}
 		else
-			printf("%.16llx %c %s\n", array[i].n_value, symtype, stringtable + array[i].n_un.n_strx);
+			printf("%.16llx %c %s\n", symtable[i].n_value, symtype, strtable + symtable[i].n_un.n_strx);
 		i++;
 	}
 }
@@ -62,6 +63,8 @@ void				handle_64(char *p, t_bool swap)
 	struct load_command		*lc;
 	struct symtab_command	*sym;
 
+	printf("sizeof header = %zu\n", sizeof(*header));
+	printf("sizeof lc = %zu\n", sizeof(*lc));
 	if (swap)
 	{
 		ft_putendl("SWAP");
@@ -70,16 +73,17 @@ void				handle_64(char *p, t_bool swap)
 	header = (struct mach_header_64 *)p;
 	lc = (void *)p + sizeof(*header);
 	i = 0;
-	printf("ncmds = %d\nsizeofcmds = %d\nflags = %d\n", header->ncmds, header->sizeofcmds, header->flags);
+	printf("ncmds = %d\nsizeofcmds = %d\nflags = %d\n\n", header->ncmds, header->sizeofcmds, header->flags);
 	while (i < header->ncmds)
 	{
+		// printf("lc->cmd = %x\n", lc->cmd);
 		if (lc->cmd == LC_SYMTAB)
 		{
 			sym = (struct symtab_command *)lc;
-			printf("stroff = %d\n", sym->stroff);
+			// printf("stroff = %d\n", sym->stroff);
 			// printf("nm symbols = %d\n", sym->nsyms);
 			print(sym->nsyms, sym->symoff, sym->stroff, p);
-			break ;
+			// break ;
 		}
 		lc = (void *)lc + lc->cmdsize;
 		i++;
