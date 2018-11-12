@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/02 14:18:27 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/08 14:04:44 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/12 19:28:33 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ static void		print_err(const char *err, const char *arg)
 	ft_putendl_fd(err, STDERR);
 }
 
-void			err_sys(t_env *e, const t_sys err_code, const char *arg)
+void			err_sys(const t_sys err_code, const char *arg)
 {
-	e->exit_status = EXIT_FAILURE;
+	g_exit_status = EXIT_FAILURE;
 	if (err_code == OPEN)
 	{
 		print_err("no such file or diretory", arg);
@@ -42,9 +42,9 @@ void			err_sys(t_env *e, const t_sys err_code, const char *arg)
 	}
 }
 
-void			err_usage(t_env *e, const t_usage err_code, const char *arg)
+void			err_usage(const t_usage err_code, const char *arg)
 {
-	e->exit_status = EXIT_FAILURE;
+	g_exit_status = EXIT_FAILURE;
 	if (err_code == ARG)
 	{
 		ft_putendl_fd("Error: no argument provided", STDERR);

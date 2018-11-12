@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:53:59 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/09 17:28:19 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/12 19:16:43 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char			get_symtype(uint8_t type, uint8_t n_sect)
 	return (t);
 }
 
-static void			print(int nsyms, int symoff, int stroff, void *p)
+static void			print_sym(int nsyms, int symoff, int stroff, void *p)
 {
 	int				i;
 	char			*strtable;
@@ -43,6 +43,7 @@ static void			print(int nsyms, int symoff, int stroff, void *p)
 	symtable = p + symoff;
 	strtable = p + stroff;
 	i = 0;
+	printf("nsyms = %d\n", nsyms);
 	while (i < nsyms)
 	{
 		symtype = get_symtype(symtable[i].n_type, symtable[i].n_sect);
@@ -56,12 +57,30 @@ static void			print(int nsyms, int symoff, int stroff, void *p)
 	}
 }
 
+static void			get_sections(struct segment_command_64 *seg)
+{
+	uint32_t			i;
+	struct section_64	*sect;
+
+	i = 0;
+	// printf("nects = %d && cmdsize = %d && sizeofseg = %lu\n", seg->nsects, seg->cmdsize, sizeof(*seg));
+	sect = (void *)seg + sizeof(*seg);
+	// printf("sect size = %lld && size of sect = %lu\n", sect->size, sizeof(*sect));
+	while (i < seg->nsects)
+	{
+		printf("segname = %s && sectname = %s\n", sect->segname, sect->sectname);
+		sect = (void *)sect + sizeof(*sect);
+		i++;
+	}
+}
+
 void				handle_64(char *p, t_bool swap)
 {
-	uint32_t				i;
-	struct mach_header_64	*header;
-	struct load_command		*lc;
-	struct symtab_command	*sym;
+	uint32_t					i;
+	struct mach_header_64		*header;
+	struct load_command			*lc;
+	struct symtab_command		*sym;
+	// struct segment_command_64	*seg;
 
 	printf("sizeof header = %zu\n", sizeof(*header));
 	printf("sizeof lc = %zu\n", sizeof(*lc));
@@ -77,12 +96,16 @@ void				handle_64(char *p, t_bool swap)
 	while (i < header->ncmds)
 	{
 		// printf("lc->cmd = %x\n", lc->cmd);
-		if (lc->cmd == LC_SYMTAB)
+		if (lc->cmd == LC_SEGMENT_64)
+		{
+			get_sections((struct segment_command_64 *)lc);
+		}
+		else if (lc->cmd == LC_SYMTAB)
 		{
 			sym = (struct symtab_command *)lc;
 			// printf("stroff = %d\n", sym->stroff);
 			// printf("nm symbols = %d\n", sym->nsyms);
-			print(sym->nsyms, sym->symoff, sym->stroff, p);
+			print_sym(sym->nsyms, sym->symoff, sym->stroff, p);
 			// break ;
 		}
 		lc = (void *)lc + lc->cmdsize;

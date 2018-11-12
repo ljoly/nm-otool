@@ -6,44 +6,46 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:58:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/08 19:03:13 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/12 19:43:55 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
+#include "handle_magic.h"
 #include "error.h"
 
-void			handle_arg(t_env *e, char *arg, int *fd)
+void			handle_arg(char *arg, int *fd)
 {
+	char		*bin;
 	struct stat	buf;
 
 	if ((*fd = open(arg, O_RDONLY)) < 0)
 	{
-		err_sys(e, OPEN, arg);
+		err_sys(OPEN, arg);
 		return ;
 	}
 	if (fstat(*fd, &buf) < 0)
 	{
-		err_sys(e, FSTAT, arg);
+		err_sys(FSTAT, arg);
 		return ;
 	}
 	if (S_ISDIR(buf.st_mode))
 	{
-		err_usage(e, DIR, arg);
+		err_usage(DIR, arg);
 		return ;
 	}
 	if (!buf.st_size)
 	{
-		err_usage(e, FORMAT, arg);
+		err_usage(FORMAT, arg);
 		return ;
 	}
-	if ((e->p = mmap(0, buf.st_size, PROT_READ, MAP_PRIVATE, *fd, 0))
+	if ((bin = mmap(0, buf.st_size, PROT_READ, MAP_PRIVATE, *fd, 0))
 		== MAP_FAILED)
 	{
-		err_sys(e, MMAP, arg);
+		err_sys(MMAP, arg);
 		return ;
 	}
-	handle_magic(e, arg);
-	if (munmap(e->p, buf.st_size) < 0)
-		err_sys(e, MUNMAP, arg);
+	handle_magic(bin, arg);
+	if (munmap(bin, buf.st_size) < 0)
+		err_sys(MUNMAP, arg);
 }
