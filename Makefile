@@ -6,7 +6,7 @@
 #    By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/10/30 14:53:21 by ljoly             #+#    #+#              #
-#    Updated: 2018/11/06 15:59:33 by ljoly            ###   ########.fr        #
+#    Updated: 2018/11/13 12:04:15 by ljoly            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,11 +15,9 @@ NAME = ft_nm
 SRC = main.c handle_arg.c error.c handle_magic.c handle64.c
 
 SRC_PATH = ./src/
+OBJ_PATH = ./obj/
 
-SRCS = $(addprefix $(SRC_PATH), $(SRC))
-
-OBJ = $(SRCS:.c=.o)
-
+OBJ = $(addprefix $(OBJ_PATH), $(SRC:.c=.o))
 
 FLAGS = -Wall -Werror -Wextra
 LIBFT = ./libft/
@@ -41,14 +39,15 @@ $(NAME): obj $(OBJ)
 obj:
 	# @make -C $(LIBFT)
 	@printf "\n\x1B[38;5;208mCompiling $(NAME)...\n\x1b[37m"
+	@mkdir -p $(OBJ_PATH)
 
-%.o: %.c
+$(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	gcc $(FLAGS) -I $(LIBFT) -I $(HEADER) -I $(LIBFT_HEADER) -o $@ -c $<
 	@printf "\e[38;5;208m▒\e[0m"
 
 clean:
 	# @make -C $(LIBFT) clean
-	@rm -rf $(OBJ)
+	@rm -rf $(OBJ_PATH)
 	@printf "$(RED)[-]$(NC)Obj files deleted\n"
 
 fclean: clean
