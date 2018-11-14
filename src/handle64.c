@@ -6,60 +6,104 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:53:59 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/13 19:47:02 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/14 17:29:00 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 
-// static char			get_symtype(uint8_t type, uint8_t n_sect)
-// {
-// 	char			t;
+static uint8_t		get_symtype(uint8_t n_type, uint8_t n_sect, t_sect *sects)
+{
+	uint8_t			t;
 
-// 	t = type & N_TYPE;
-// 	if (t == N_UNDF)
-// 	{
-// 		t = 'u';
-// 	}
-// 	else if (t == N_SECT)
-// 	{
-// 		printf("n_sect = %d\n", n_sect);
-// 		t = 't';
-// 	}
-// 	if (type & N_EXT)
-// 	{
-// 		t -= 32;
-// 	}
-// 	return (t);
-// }
+	// printf("n_sect = %d ; n_type = %d ; n_value = %llu\n", n_sect, n_type, n_value);
+	t = n_type & N_TYPE;
+	if (t == N_UNDF)
+	{
+		t = sects[n_sect - 1].symbol ? 'c' : 'u';
+	}
+	else if (t == N_ABS)
+	{
+		t = 'a';
+	}
+	else if (t == N_SECT)
+	{
+		// printf("n_sect = %d\n", n_sect);
+		t = sects[n_sect - 1].symbol ? sects[n_sect - 1].symbol : 's';
+	}
+	if (n_type & N_EXT)
+	{
+		t -= 32;
+	}
+	return (t);
+}
 
-// static void			print_sym(int nsyms, int symoff, int stroff, void *p)
-// {
-// 	int				i;
-// 	char			*strtable;
-// 	struct nlist_64	*symtable;
-// 	uint8_t			symtype;
+static void			sort_syms(t_sym *syms, uint32_t size)
+{
+	uint32_t		i;
+	t_sym			tmp;
 
-// 	symtable = p + symoff;
-// 	strtable = p + stroff;
-// 	i = 0;
-// 	printf("nsyms = %d\n", nsyms);
-// 	while (i < nsyms)
-// 	{
-// 		symtype = get_symtype(symtable[i].n_type, symtable[i].n_sect);
-// 		if (symtype == 'u' || symtype == 'U')
-// 		{
-// 			printf("%18c %s\n", symtype, strtable + symtable[i].n_un.n_strx);
-// 		}
-// 		else
-// 			printf("%.16llx %c %s\n", symtable[i].n_value, symtype, strtable + symtable[i].n_un.n_strx);
-// 		i++;
-// 	}
-// }
+	i = 0;
+	while (i < size - 1)
+	{
+		if (ft_strcmp(syms[i].name, syms[i + 1].name) > 0)
+		{
+			tmp.value = syms[i].value;
+			tmp.type = syms[i].type;
+			tmp.name = syms[i].name;
+			syms[i].value = syms[i + 1].value;
+			syms[i].type = syms[i + 1].type;
+			syms[i].name = syms[i + 1].name;
+			syms[i + 1].value = tmp.value;
+			syms[i + 1].type = tmp.type;
+			syms[i + 1].name = tmp.name;
+			i = -1;
+		}
+		i++;
+	}
+}
+
+static void			print_sym(t_bin *bin, void *file)
+{
+	uint32_t		i;
+	char			*strtable;
+	struct nlist_64	*symtable;
+	// uint8_t			symtype;
+
+	symtable = file + bin->symtab->symoff;
+	strtable = file + bin->symtab->stroff;
+	bin->syms = (t_sym*)ft_memalloc(sizeof(t_sym) * bin->symtab->nsyms);
+	i = 0;
+	while (i < bin->symtab->nsyms)
+	{
+		bin->syms[i].type = get_symtype(symtable[i].n_type, symtable[i].n_sect, bin->sects);
+		bin->syms[i].value = symtable[i].n_value;
+		bin->syms[i].name = strtable + symtable[i].n_un.n_strx;
+		// if (symtype == 'u' || symtype == 'U')
+		// {
+		// 	printf("%18c %s\n", symtype, strtable + symtable[i].n_un.n_strx);
+		// }
+		// else
+		// 	printf("%.16llx %c %s\n", symtable[i].n_value, symtype, strtable + symtable[i].n_un.n_strx);
+		i++;
+	}
+	sort_syms(bin->syms, bin->symtab->nsyms);
+	i = 0;
+	while (i < bin->symtab->nsyms)
+	{
+		if (bin->syms[i].type == 'u' || bin->syms[i].type == 'U')
+		{
+			printf("%18c %s\n", bin->syms[i].type, bin->syms[i].name);
+		}
+		else
+			printf("%.16llx %c %s\n", bin->syms[i].value, bin->syms[i].type, bin->syms[i].name);
+		i++;
+	}
+}
 
 void				handle_64(char *file, t_bool swap)
 {
-	t_obj						obj;
+	t_bin						bin;
 	uint32_t					i;
 
 	if (swap)
@@ -67,40 +111,37 @@ void				handle_64(char *file, t_bool swap)
 		ft_putendl("SWAP");
 		return ;
 	}
-	obj.header = (struct mach_header *)file;
-	obj.lc = (void *)file + sizeof(struct mach_header_64);
-	obj.nsects = 0;
+	bin.header = (struct mach_header *)file;
+	bin.lc = (void *)file + sizeof(struct mach_header_64);
+	bin.nsects = 0;
 	i = 0;
-	while (i < obj.header->ncmds)
+	while (i < bin.header->ncmds)
 	{
-		if (obj.lc->cmd == LC_SEGMENT_64)
+		if (bin.lc->cmd == LC_SEGMENT_64)
 		{
-			count_sections(&obj);
+			count_sections_64(&bin);
 		}
-		obj.lc = (void *)obj.lc + obj.lc->cmdsize;
+		bin.lc = (void *)bin.lc + bin.lc->cmdsize;
 		i++;
 	}
-	printf("NSECTS = %u\n", obj.nsects);
-	get_sections(&obj, file);
-	i = 0;
-	while (i < obj.nsects)
-	{
-		printf("%c %s\n", obj.sects[i].symbol, obj.sects[i].name);
-		i++;
-	}
+	// printf("NSECTS = %u\n", bin.nsects);
+	get_sections_64(&bin, file);
 	// i = 0;
-	// while (i < obj.header->ncmds)
+	// while (i < bin.nsects)
 	// {
-	// 	if (obj.lc->cmd == LC_SEGMENT_64)
-	// 	{
-	// 		get_sections((struct segment_command_64 *)obj.lc);
-	// 	}
-	// 	else if (obj.lc->cmd == LC_SYMTAB)
-	// 	{
-	// 		obj.sym = (struct symtab_command *)obj.lc;
-	// 		print_sym(obj.sym->nsyms, obj.sym->symoff, obj.sym->stroff, file);
-	// 	}
-	// 	obj.lc = (void *)obj.lc + obj.lc->cmdsize;
+	// 	printf("%c %s\n", bin.sects[i].symbol, bin.sects[i].name);
 	// 	i++;
 	// }
+	i = 0;
+	bin.lc = (void *)file + sizeof(struct mach_header_64);
+	while (i < bin.header->ncmds)
+	{
+		if (bin.lc->cmd == LC_SYMTAB)
+		{
+			bin.symtab = (struct symtab_command *)bin.lc;
+			print_sym(&bin, file);
+		}
+		bin.lc = (void *)bin.lc + bin.lc->cmdsize;
+		i++;
+	}
 }
