@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 13:29:29 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/14 15:26:20 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/15 16:55:24 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 static t_sect		g_sections[] = {{SECT_TEXT,'t'},
 	{SECT_DATA, 'd'},
 	{SECT_BSS, 'b'}};
-	// {SECT_COMMON, 'c'}};
 
 static t_sect		find_symtype(char *sect_name)
 {
