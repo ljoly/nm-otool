@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 19:35:27 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/12 19:37:18 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/16 17:07:07 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ typedef struct	s_magic
 {
 	unsigned int	num;
 	t_bool			swap;
-	void			(*cmd)(char *p, t_bool swap);
+	void			(*cmd)(t_bool swap);
 }				t_magic;
 
-void			handle_magic(char *bin, char *arg);
+void			handle_magic(const char *arg);
 
 #endif

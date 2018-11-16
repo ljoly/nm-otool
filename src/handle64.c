@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:53:59 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/15 17:47:42 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/16 17:04:09 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,14 @@ static void			sort_syms(t_sym *syms, uint32_t size)
 	}
 }
 
-static void			print_sym(t_bin *bin, void *file)
+static void			print_sym(t_bin *bin)
 {
 	uint32_t		i;
 	char			*strtable;
 	struct nlist_64	*symtable;
 
-	symtable = file + bin->symtab->symoff;
-	strtable = file + bin->symtab->stroff;
+	symtable = g_file + bin->symtab->symoff;
+	strtable = g_file + bin->symtab->stroff;
 	bin->syms = (t_sym*)ft_memalloc(sizeof(t_sym) * bin->symtab->nsyms);
 	i = 0;
 	while (i < bin->symtab->nsyms)
@@ -98,7 +98,7 @@ static void			print_sym(t_bin *bin, void *file)
 	}
 }
 
-void				handle_64(char *file, t_bool swap)
+void				handle_64(t_bool swap)
 {
 	t_bin						bin;
 	uint32_t					i;
@@ -108,8 +108,8 @@ void				handle_64(char *file, t_bool swap)
 		ft_putendl("SWAP");
 		return ;
 	}
-	bin.header = (struct mach_header *)file;
-	bin.lc = (void *)file + sizeof(struct mach_header_64);
+	bin.header = (struct mach_header *)g_file;
+	bin.lc = g_file + sizeof(struct mach_header_64);
 	bin.nsects = 0;
 	i = 0;
 	while (i < bin.header->ncmds)
@@ -121,15 +121,15 @@ void				handle_64(char *file, t_bool swap)
 		bin.lc = (void *)bin.lc + bin.lc->cmdsize;
 		i++;
 	}
-	get_sections_64(&bin, file);
+	get_sections_64(&bin, g_file);
 	i = 0;
-	bin.lc = (void *)file + sizeof(struct mach_header_64);
+	bin.lc = g_file + sizeof(struct mach_header_64);
 	while (i < bin.header->ncmds)
 	{
 		if (bin.lc->cmd == LC_SYMTAB)
 		{
 			bin.symtab = (struct symtab_command *)bin.lc;
-			print_sym(&bin, file);
+			print_sym(&bin);
 			break ;
 		}
 		bin.lc = (void *)bin.lc + bin.lc->cmdsize;
