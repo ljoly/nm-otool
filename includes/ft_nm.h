@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/30 14:31:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/16 17:03:05 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/19 12:14:58 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@
 # include "symbols.h"
 
 int						g_exit_status;
+
 void					*g_file;
 int						g_size;
+t_bool					check_access(const void *ptr);
 
 typedef struct			s_bin
 {
@@ -36,9 +38,15 @@ typedef struct			s_bin
 }						t_bin;
 
 void					handle_arg(const char *arg, int *fd);
-t_bool					check_access(const void *ptr);
+
 void					handle_64(t_bool swap);
 void					count_sections_64(t_bin *bin);
 void					get_sections_64(t_bin *bin, char *file);
+
+void					get_syms(t_bin bin, void (*print_sym)(t_bin *bin));
+void					print_sym64(t_bin *bin);
+// void					print_sym32(t_bin *bin);
+
+void					sort_syms(t_sym *syms, uint32_t size);
 
 #endif
