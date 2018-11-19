@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/15 17:56:04 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/16 16:54:57 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/19 11:16:44 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 t_bool		check_access(const void *ptr)
 {
-	return (ptr - g_file <= g_file + g_size);
+	return (ptr - g_file >= 0 && ptr - g_file <= g_size);
 }
