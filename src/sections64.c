@@ -6,13 +6,13 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 13:29:29 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/15 16:55:24 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/19 11:27:15 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 
-static t_sect		g_sections[] = {{SECT_TEXT,'t'},
+static t_sect		g_sections[3] = {{SECT_TEXT, 't'},
 	{SECT_DATA, 'd'},
 	{SECT_BSS, 'b'}};
 
@@ -41,17 +41,14 @@ static void			store_sections(struct segment_command_64 *seg,
 {
 	uint32_t			i;
 	struct section_64	*sect;
-	
+
 	if (!seg->nsects)
 		return ;
 	sect = (void *)seg + sizeof(*seg);
 	i = 0;
 	while (i < seg->nsects)
 	{
-		// printf("segname = %s && sectname = %s\n", sect->segname, sect->sectname);
 		sects[*s] = find_symtype(sect->sectname);
-		// if (sects[*s].symbol == FALSE)
-		// sect[*s].symbol = 
 		sect = (void *)sect + sizeof(*sect);
 		i++;
 		*s += 1;
