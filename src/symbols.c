@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 12:01:51 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/19 12:23:41 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/19 20:11:28 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static uint8_t		get_type(uint8_t n_type, uint8_t n_sect, t_sect *sects)
 	return (t);
 }
 
-void				print_sym64(t_bin *bin)
+t_bool				print_sym64(t_bin *bin)
 {
 	uint32_t		i;
 	char			*strtable;
@@ -52,6 +52,9 @@ void				print_sym64(t_bin *bin)
 
 	arr = g_file + bin->symtab->symoff;
 	strtable = g_file + bin->symtab->stroff;
+	if (!access_at(&arr[bin->symtab->nsyms - 1].n_value) ||
+		!access_at((void*)(strtable + arr[bin->symtab->nsyms - 1].n_un.n_strx)))
+		return (FALSE);
 	bin->syms = (t_sym*)ft_memalloc(sizeof(t_sym) * bin->symtab->nsyms);
 	i = -1;
 	while (++i < bin->symtab->nsyms)
@@ -71,22 +74,25 @@ void				print_sym64(t_bin *bin)
 			printf("%.16llx %c %s\n", bin->syms[i].value, bin->syms[i].type,
 				bin->syms[i].name);
 	}
+	return (TRUE);
 }
 
-void				get_syms(t_bin bin, void (*print_sym)(t_bin *bin))
+t_bool				get_syms(t_bin bin, t_bool (*print_sym)(t_bin *bin))
 {
 	uint32_t		i;
 
 	i = 0;
 	while (i < bin.header->ncmds)
 	{
+		if (!access_at((void*)bin.lc + bin.lc->cmdsize))
+			return (FALSE);
 		if (bin.lc->cmd == LC_SYMTAB)
 		{
 			bin.symtab = (struct symtab_command *)bin.lc;
-			print_sym(&bin);
-			break ;
+			return (print_sym(&bin));
 		}
 		bin.lc = (void *)bin.lc + bin.lc->cmdsize;
 		i++;
 	}
+	return (FALSE);
 }

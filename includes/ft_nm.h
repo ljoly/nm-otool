@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/30 14:31:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/19 12:14:58 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/19 19:52:25 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int						g_exit_status;
 
 void					*g_file;
 int						g_size;
-t_bool					check_access(const void *ptr);
+t_bool					access_at(const void *ptr);
 
 typedef struct			s_bin
 {
@@ -39,12 +39,12 @@ typedef struct			s_bin
 
 void					handle_arg(const char *arg, int *fd);
 
-void					handle_64(t_bool swap);
+t_bool					handle_64(t_bool swap);
 void					count_sections_64(t_bin *bin);
 void					get_sections_64(t_bin *bin, char *file);
 
-void					get_syms(t_bin bin, void (*print_sym)(t_bin *bin));
-void					print_sym64(t_bin *bin);
+t_bool					get_syms(t_bin bin, t_bool (*print_sym)(t_bin *bin));
+t_bool					print_sym64(t_bin *bin);
 // void					print_sym32(t_bin *bin);
 
 void					sort_syms(t_sym *syms, uint32_t size);
