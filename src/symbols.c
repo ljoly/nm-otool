@@ -6,11 +6,12 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 12:01:51 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/19 20:11:28 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/20 18:02:13 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
+#include "handle_memory.h"
 
 static uint8_t		get_type(uint8_t n_type, uint8_t n_sect, t_sect *sects)
 {
@@ -52,13 +53,13 @@ t_bool				print_sym64(t_bin *bin)
 
 	arr = g_file + bin->symtab->symoff;
 	strtable = g_file + bin->symtab->stroff;
-	if (!access_at(&arr[bin->symtab->nsyms - 1].n_value) ||
-		!access_at((void*)(strtable + arr[bin->symtab->nsyms - 1].n_un.n_strx)))
-		return (FALSE);
 	bin->syms = (t_sym*)ft_memalloc(sizeof(t_sym) * bin->symtab->nsyms);
 	i = -1;
 	while (++i < bin->symtab->nsyms)
 	{
+		if (!access_at(&arr[i].n_value) ||
+			!access_at((void*)(strtable + arr[i].n_un.n_strx)))
+			return (free_memory(bin->sects, bin->syms, FALSE));
 		bin->syms[i].type = get_type(arr[i].n_type, arr[i].n_sect, bin->sects);
 		bin->syms[i].value = arr[i].n_value;
 		bin->syms[i].name = strtable + arr[i].n_un.n_strx;
@@ -74,24 +75,24 @@ t_bool				print_sym64(t_bin *bin)
 			printf("%.16llx %c %s\n", bin->syms[i].value, bin->syms[i].type,
 				bin->syms[i].name);
 	}
-	return (TRUE);
+	return (free_memory(NULL, bin->syms, TRUE));
 }
 
-t_bool				get_syms(t_bin bin, t_bool (*print_sym)(t_bin *bin))
+t_bool				get_syms(t_bin *bin, t_bool (*print_sym)(t_bin *bin))
 {
 	uint32_t		i;
 
 	i = 0;
-	while (i < bin.header->ncmds)
+	while (i < bin->header->ncmds)
 	{
-		if (!access_at((void*)bin.lc + bin.lc->cmdsize))
-			return (FALSE);
-		if (bin.lc->cmd == LC_SYMTAB)
+		if (!access_at((void*)bin->lc + bin->lc->cmdsize))
+			return (free_memory(bin->sects, NULL, FALSE));
+		if (bin->lc->cmd == LC_SYMTAB)
 		{
-			bin.symtab = (struct symtab_command *)bin.lc;
-			return (print_sym(&bin));
+			bin->symtab = (struct symtab_command *)bin->lc;
+			return (print_sym(bin));
 		}
-		bin.lc = (void *)bin.lc + bin.lc->cmdsize;
+		bin->lc = (void *)bin->lc + bin->lc->cmdsize;
 		i++;
 	}
 	return (FALSE);

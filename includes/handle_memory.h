@@ -1,39 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   handle_memory.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/30 14:31:10 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/20 17:40:10 by ljoly            ###   ########.fr       */
+/*   Created: 2018/11/20 16:20:19 by ljoly             #+#    #+#             */
+/*   Updated: 2018/11/20 18:00:34 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_nm.h"
-#include "error.h"
+#ifndef HANDLE_MEMORY_H
+# define HANDLE_MEMORY_H
 
-int				main(int ac, char **av)
-{
-	int			fd;
-	int			i;
+# include "ft_nm.h"
 
-    if (ac < 2)
-    {
-		err_cmd(ARG, NULL);
-        return (EXIT_FAILURE);
-    }
-	g_exit_status = EXIT_SUCCESS;
-	i = 1;
-	while (i < ac)
-	{
-		if (ac > 2)
-		{
-			ft_printf("\n%s: \n", av[i]);
-		}
-		handle_arg(av[i], &fd);
-		close(fd);
-		i++;
-	}
-    return (g_exit_status);
-}
+# define ALL 0x0
+# define SECTIONS 0x1
+# define SYMBOLS 0x2
+
+t_bool		free_memory(t_sect *sects, t_sym *syms, t_bool status);
+
+#endif

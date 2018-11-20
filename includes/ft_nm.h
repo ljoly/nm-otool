@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/30 14:31:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/19 19:52:25 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/20 18:50:11 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,23 @@
 # include "sections.h"
 # include "symbols.h"
 
+/*
+** return value
+*/
+
 int						g_exit_status;
 
+/*
+** file data
+*/
+
 void					*g_file;
-int						g_size;
+uint32_t				g_size;
 t_bool					access_at(const void *ptr);
+
+/*
+** parsing: header, sections, segments and symbols
+*/
 
 typedef struct			s_bin
 {
@@ -38,15 +50,12 @@ typedef struct			s_bin
 }						t_bin;
 
 void					handle_arg(const char *arg, int *fd);
-
 t_bool					handle_64(t_bool swap);
-void					count_sections_64(t_bin *bin);
-void					get_sections_64(t_bin *bin, char *file);
-
-t_bool					get_syms(t_bin bin, t_bool (*print_sym)(t_bin *bin));
+t_bool					count_sects_64(t_bin *bin);
+t_bool					get_sections_64(t_bin *bin, char *file);
+t_bool					get_syms(t_bin *bin, t_bool (*print_sym)(t_bin *bin));
 t_bool					print_sym64(t_bin *bin);
 // void					print_sym32(t_bin *bin);
-
 void					sort_syms(t_sym *syms, uint32_t size);
 
 #endif

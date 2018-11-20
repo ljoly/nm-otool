@@ -6,12 +6,12 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:53:59 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/19 20:07:08 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/20 18:57:02 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
-#include "error.h"
+#include "handle_memory.h"
 
 static void		swap64(void)
 {
@@ -30,19 +30,24 @@ t_bool			handle_64(t_bool swap)
 	if (!access_at(g_file + sizeof(struct mach_header_64)))
 		return (FALSE);
 	bin.lc = g_file + sizeof(struct mach_header_64);
+	bin.sects = NULL;
 	bin.nsects = 0;
 	i = 0;
 	while (i < bin.header->ncmds)
 	{
-		if (!access_at((void*)bin.lc + bin.lc->cmdsize))
-			return (FALSE);
+		if (!bin.lc->cmdsize || !access_at((void*)bin.lc + bin.lc->cmdsize))
+			return (free_memory(bin.sects, NULL, FALSE));
 		if (bin.lc->cmd == LC_SEGMENT_64)
-			count_sections_64(&bin);
+			// HERE
+			if (!count_sects_64(&bin))
+			// HERE
+				return (free_memory(bin.sects, NULL, FALSE));
 		bin.lc = (void *)bin.lc + bin.lc->cmdsize;
 		i++;
 	}
-	get_sections_64(&bin, g_file);
-	i = 0;
+	if (bin.nsects * sizeof(struct section_64) > g_size ||
+		!get_sections_64(&bin, g_file))
+		return (free_memory(bin.sects, NULL, FALSE));
 	bin.lc = g_file + sizeof(struct mach_header_64);
-	return (get_syms(bin, &print_sym64));
+	return (get_syms(&bin, &print_sym64));
 }

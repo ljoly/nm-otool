@@ -6,14 +6,14 @@
 #    By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/10/30 14:53:21 by ljoly             #+#    #+#              #
-#    Updated: 2018/11/19 17:01:25 by ljoly            ###   ########.fr        #
+#    Updated: 2018/11/20 16:26:47 by ljoly            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_nm
 
 SRC = main.c handle_arg.c error.c handle_magic.c handle64.c sections64.c \
-		symbols.c sort.c access.c
+		symbols.c sort.c access.c free_memory.c
 
 SRC_PATH = ./src/
 OBJ_PATH = ./obj/

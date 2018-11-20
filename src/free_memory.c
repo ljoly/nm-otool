@@ -1,39 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   free_memory.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/30 14:31:10 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/20 17:40:10 by ljoly            ###   ########.fr       */
+/*   Created: 2018/11/20 16:09:14 by ljoly             #+#    #+#             */
+/*   Updated: 2018/11/20 18:00:00 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
-#include "error.h"
+#include "handle_memory.h"
 
-int				main(int ac, char **av)
+t_bool		free_memory(t_sect *sects, t_sym *syms, t_bool status)
 {
-	int			fd;
-	int			i;
-
-    if (ac < 2)
-    {
-		err_cmd(ARG, NULL);
-        return (EXIT_FAILURE);
-    }
-	g_exit_status = EXIT_SUCCESS;
-	i = 1;
-	while (i < ac)
+	if (sects)
 	{
-		if (ac > 2)
-		{
-			ft_printf("\n%s: \n", av[i]);
-		}
-		handle_arg(av[i], &fd);
-		close(fd);
-		i++;
+		free(sects);
 	}
-    return (g_exit_status);
+	if (syms)
+	{
+		free(syms);
+	}
+	return (status);
 }

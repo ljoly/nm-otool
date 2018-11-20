@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:57:52 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/19 17:33:43 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/20 17:26:07 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,6 @@ void				handle_magic(const char *arg)
 	}
 	if (!valid_file)
 	{
-		err_usage(FORMAT, arg);
+		err_cmd(FORMAT, arg);
 	}
 }

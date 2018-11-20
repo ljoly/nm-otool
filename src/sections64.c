@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 13:29:29 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/19 11:27:15 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/20 18:56:51 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void			store_sections(struct segment_command_64 *seg,
 	}
 }
 
-void				get_sections_64(t_bin *bin, char *file)
+t_bool				get_sections_64(t_bin *bin, char *file)
 {
 	uint32_t					i;
 	struct segment_command_64	*seg;
@@ -75,12 +75,18 @@ void				get_sections_64(t_bin *bin, char *file)
 		bin->lc = (void *)bin->lc + bin->lc->cmdsize;
 		i++;
 	}
+	return (TRUE);
 }
 
-void				count_sections_64(t_bin *bin)
+t_bool				count_sects_64(t_bin *bin)
 {
 	struct segment_command_64	*seg;
 
 	seg = (struct segment_command_64*)bin->lc;
+	// HERE
+	if (seg->nsects * sizeof(struct section_64) > seg->cmdsize)
+		return (FALSE);
+	// HERE
 	bin->nsects += seg->nsects;
+	return (TRUE);
 }
