@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 18:29:53 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/21 18:40:17 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/21 19:18:52 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ void	print_syms(const t_bin bin)
 	while (i < bin.symtab->nsyms)
 	{
 		if (bin.syms[i].type == 'u' || bin.syms[i].type == 'U')
-			printf("%18c %s\n", bin.syms[i].type, bin.syms[i].name);
+			ft_printf("%18c %s\n", bin.syms[i].type, bin.syms[i].name);
 		else if (bin.syms[i].type)
-			printf("%.16llx %c %s\n", bin.syms[i].value, bin.syms[i].type,
+			ft_printf("%.16llx %c %s\n", bin.syms[i].value, bin.syms[i].type,
 				bin.syms[i].name);
 		i++;
 	}
