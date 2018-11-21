@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/30 14:31:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/21 18:44:12 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/21 19:49:31 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <sys/mman.h>
 # include <mach-o/loader.h>
 # include <mach-o/nlist.h>
+# include <mach-o/fat.h>
 # include <sys/stat.h>
 # include "sections.h"
 # include "symbols.h"
@@ -51,6 +52,7 @@ typedef struct	s_bin
 
 void			handle_arg(const char *arg, int *fd);
 t_bool			handle_64(t_bool swap);
+t_bool			handle_fat32(t_bool swap);
 
 t_bool			is_consistent(t_bin *bin, t_bool (*check_sects)(t_bin *bin));
 
