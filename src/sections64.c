@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 13:29:29 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/20 18:56:51 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/21 17:49:37 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ static void			store_sections(struct segment_command_64 *seg,
 	uint32_t			i;
 	struct section_64	*sect;
 
-	if (!seg->nsects)
-		return ;
 	sect = (void *)seg + sizeof(*seg);
 	i = 0;
 	while (i < seg->nsects)
@@ -55,7 +53,7 @@ static void			store_sections(struct segment_command_64 *seg,
 	}
 }
 
-t_bool				get_sections_64(t_bin *bin, char *file)
+void				get_sections_64(t_bin *bin, char *file)
 {
 	uint32_t					i;
 	struct segment_command_64	*seg;
@@ -70,23 +68,12 @@ t_bool				get_sections_64(t_bin *bin, char *file)
 		if (bin->lc->cmd == LC_SEGMENT_64)
 		{
 			seg = (struct segment_command_64 *)bin->lc;
-			store_sections(seg, bin->sects, &s);
+			if (seg->nsects > 0)
+			{
+				store_sections(seg, bin->sects, &s);
+			}
 		}
 		bin->lc = (void *)bin->lc + bin->lc->cmdsize;
 		i++;
 	}
-	return (TRUE);
-}
-
-t_bool				count_sects_64(t_bin *bin)
-{
-	struct segment_command_64	*seg;
-
-	seg = (struct segment_command_64*)bin->lc;
-	// HERE
-	if (seg->nsects * sizeof(struct section_64) > seg->cmdsize)
-		return (FALSE);
-	// HERE
-	bin->nsects += seg->nsects;
-	return (TRUE);
 }

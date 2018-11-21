@@ -6,13 +6,13 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 12:12:13 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/19 12:12:35 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/21 17:50:55 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 
-void			sort_syms(t_sym *syms, uint32_t size)
+void		sort_syms(t_sym *syms, uint32_t size)
 {
 	uint32_t	i;
 	t_sym		tmp;
