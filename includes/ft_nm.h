@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/30 14:31:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/21 19:49:31 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/22 17:32:11 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,9 @@ void			handle_arg(const char *arg, int *fd);
 t_bool			handle_64(t_bool swap);
 t_bool			handle_fat32(t_bool swap);
 
-t_bool			is_consistent(t_bin *bin, t_bool (*check_sects)(t_bin *bin));
+uint32_t		swap_32(uint32_t val);
+
+t_bool			is_consistent(t_bin *bin, t_bool (*check)(t_bin *bin));
 
 t_bool			check_sects_64(t_bin *bin);
 void			get_sections_64(t_bin *bin, char *file);

@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 19:31:58 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/21 19:52:14 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/22 17:34:53 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 t_bool		handle_fat32(t_bool swap)
 {
 	struct fat_header	*header;
+	uint32_t			i;
 
 	if (swap)
 		ft_putendl("SWAP");
@@ -23,6 +24,11 @@ t_bool		handle_fat32(t_bool swap)
 	if (!access_at(g_file + sizeof(*header)))
 	{
 		return (FALSE);
+	}
+	i = 0;
+	while (i < header->nfat_arch)
+	{
+		i++;
 	}
 	return (TRUE);
 	// bin.lc = g_file + sizeof(struct mach_header_64);

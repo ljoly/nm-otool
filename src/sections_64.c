@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 13:29:29 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/21 19:33:25 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/22 18:37:28 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static void			store_sections(struct segment_command_64 *seg,
 	i = 0;
 	while (i < seg->nsects)
 	{
+		ft_printf("index = %d: %p\n", *s, sects[*s]);
 		sects[*s] = find_symtype(sect->sectname);
 		sect = (void *)sect + sizeof(*sect);
 		i++;
@@ -60,6 +61,7 @@ void				get_sections_64(t_bin *bin, char *file)
 	int							s;
 
 	bin->sects = (t_sect*)ft_memalloc(sizeof(t_sect) * bin->nsects);
+	// printf("sects size = %zu\n", sizeof(t_sect));
 	bin->lc = (void *)file + sizeof(struct mach_header_64);
 	i = 0;
 	s = 0;

@@ -1,20 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_memory.h                                    :+:      :+:    :+:   */
+/*   swaps.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/20 16:20:19 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/22 15:16:24 by ljoly            ###   ########.fr       */
+/*   Created: 2018/11/22 17:27:54 by ljoly             #+#    #+#             */
+/*   Updated: 2018/11/22 17:29:48 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HANDLE_MEMORY_H
-# define HANDLE_MEMORY_H
+#include "ft_nm.h"
 
-# include "ft_nm.h"
-
-t_bool		free_memory(t_sect *sects, t_sym *syms, t_bool status);
-
-#endif
+uint32_t	swap_32(uint32_t val)
+{
+	val = ((val << 8) & 0xFF00FF00) | ((val >> 8) & 0xFF00FF);
+	return (val << 16) | (val >> 16);
+}

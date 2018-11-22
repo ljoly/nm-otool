@@ -6,7 +6,7 @@
 #    By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/10/30 14:53:21 by ljoly             #+#    #+#              #
-#    Updated: 2018/11/21 19:49:42 by ljoly            ###   ########.fr        #
+#    Updated: 2018/11/22 18:36:23 by ljoly            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = ft_nm
 
 SRC = main.c handle_arg.c error.c handle_magic.c handle_64.c sections_64.c \
 		symbols.c sort.c free_memory.c data_consistency.c print.c \
-		handle_fat32.c
+		handle_fat32.c swaps.c \
 
 SRC_PATH = ./src/
 OBJ_PATH = ./obj/
@@ -35,7 +35,7 @@ NC=\033[0m
 all: $(NAME)
 
 $(NAME): obj $(OBJ)
-	gcc $(FLAGS) -o $(NAME) $(OBJ) -I $(HEADER) -L $(LIBFT) -lft
+	gcc -fsanitize=address $(FLAGS) -o $(NAME) $(OBJ) -I $(HEADER) -L $(LIBFT) -lft
 	@printf "\n$(GREEN)[✓]$(NC)\x1B[32mExecutable $(NAME) ready !\x1B[37m\n"
 
 obj:
