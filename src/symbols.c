@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 12:01:51 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/26 15:44:40 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/26 18:04:59 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,17 @@ t_bool				get_syms64(t_bin *bin)
 	return (TRUE);
 }
 
+static t_bool		get_symtab(t_bin *bin)
+{
+	bin->symtab = (struct symtab_command *)bin->lc;
+	if (!(bin->syms = (t_sym*)ft_memalloc(sizeof(t_sym) * bin->symtab->nsyms)))
+	{
+		err_cmd(MALLOC, "system");
+		return (FALSE);
+	}
+	return (TRUE);
+}
+
 t_bool				handle_syms(t_bin *bin, t_bool (*get_syms)(t_bin *bin))
 {
 	uint32_t		i;
@@ -78,21 +89,17 @@ t_bool				handle_syms(t_bin *bin, t_bool (*get_syms)(t_bin *bin))
 	while (i < bin->header->ncmds)
 	{
 		if (!access_at((void*)bin->lc + bin->lc->cmdsize))
-		{
 			return (free_memory(bin->sects, NULL, FALSE));
-		}
 		if (bin->lc->cmd == LC_SYMTAB)
 		{
-			bin->symtab = (struct symtab_command *)bin->lc;
-			if (!(bin->syms = (t_sym*)ft_memalloc(sizeof(t_sym) * bin->symtab->nsyms)))
+			if (!get_symtab(bin))
 			{
-				err_cmd(MALLOC, "system");
 				return (free_memory(bin->sects, bin->syms, FALSE));
 			}
 			if (!get_syms(bin))
+			{
 				return (free_memory(bin->sects, bin->syms, FALSE));
-			else
-				break ;
+			}
 		}
 		bin->lc = (void *)bin->lc + bin->lc->cmdsize;
 		i++;
