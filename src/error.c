@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/02 14:18:27 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/20 17:24:55 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/26 14:21:54 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,10 @@ static void			err_sys(const t_err err_code, const char *arg)
 	{
 		print_err("munmap", arg);
 	}
+	else if (err_code == MALLOC)
+	{
+		print_err("malloc", arg);
+	}
 }
 
 static void			err_usage(const t_err err_code, const char *arg)
@@ -64,7 +68,8 @@ void				err_cmd(const t_err err, const char *arg)
 	{
 		err_usage(err, arg);
 	}
-	else if (err == OPEN || err == FSTAT || err == MMAP || err == MUNMAP)
+	else if (err == OPEN || err == FSTAT || err == MMAP || err == MUNMAP
+		|| err == MALLOC)
 	{
 		err_sys(err, arg);
 	}
