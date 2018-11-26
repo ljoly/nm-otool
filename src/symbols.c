@@ -6,14 +6,15 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 12:01:51 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/21 19:12:38 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/26 14:04:20 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 #include "handle_memory.h"
 
-static uint8_t		get_type(uint8_t n_type, uint8_t n_sect, t_sect *sects)
+static uint8_t		get_type(uint8_t n_type, uint8_t n_sect, uint64_t n_value,
+	t_sect *sects)
 {
 	uint8_t			t;
 
@@ -24,7 +25,7 @@ static uint8_t		get_type(uint8_t n_type, uint8_t n_sect, t_sect *sects)
 	t = n_type & N_TYPE;
 	if (t == N_UNDF)
 	{
-		t = sects[n_sect - 1].symbol ? 'c' : 'u';
+		t = n_value ? 'c' : 'u';
 	}
 	else if (t == N_ABS)
 	{
@@ -59,7 +60,8 @@ t_bool				get_syms64(t_bin *bin)
 		if (!access_at(&arr[i].n_value) ||
 			!access_at((void*)(strtable + arr[i].n_un.n_strx)))
 			return (FALSE);
-		bin->syms[i].type = get_type(arr[i].n_type, arr[i].n_sect, bin->sects);
+		bin->syms[i].type = get_type(arr[i].n_type, arr[i].n_sect,
+			arr[i].n_value, bin->sects);
 		bin->syms[i].value = arr[i].n_value;
 		bin->syms[i].name = strtable + arr[i].n_un.n_strx;
 		i++;

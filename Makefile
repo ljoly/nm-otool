@@ -6,7 +6,7 @@
 #    By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/10/30 14:53:21 by ljoly             #+#    #+#              #
-#    Updated: 2018/11/22 18:36:23 by ljoly            ###   ########.fr        #
+#    Updated: 2018/11/26 15:08:07 by ljoly            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ NC=\033[0m
 all: $(NAME)
 
 $(NAME): obj $(OBJ)
-	gcc -fsanitize=address $(FLAGS) -o $(NAME) $(OBJ) -I $(HEADER) -L $(LIBFT) -lft
+	gcc $(FLAGS) -o $(NAME) $(OBJ) -I $(HEADER) -L $(LIBFT) -lft
 	@printf "\n$(GREEN)[✓]$(NC)\x1B[32mExecutable $(NAME) ready !\x1B[37m\n"
 
 obj:

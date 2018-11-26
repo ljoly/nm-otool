@@ -6,11 +6,12 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 13:29:29 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/22 18:37:28 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/26 14:46:37 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
+#include "error.h"
 
 static t_sect		g_sections[3] = {{SECT_TEXT, 't'},
 	{SECT_DATA, 'd'},
@@ -46,7 +47,7 @@ static void			store_sections(struct segment_command_64 *seg,
 	i = 0;
 	while (i < seg->nsects)
 	{
-		ft_printf("index = %d: %p\n", *s, sects[*s]);
+		// ft_printf("index = %d: %p\n", *s, sects[*s]);
 		sects[*s] = find_symtype(sect->sectname);
 		sect = (void *)sect + sizeof(*sect);
 		i++;
@@ -54,15 +55,18 @@ static void			store_sections(struct segment_command_64 *seg,
 	}
 }
 
-void				get_sections_64(t_bin *bin, char *file)
+t_bool				get_sections_64(t_bin *bin)
 {
 	uint32_t					i;
 	struct segment_command_64	*seg;
 	int							s;
 
-	bin->sects = (t_sect*)ft_memalloc(sizeof(t_sect) * bin->nsects);
-	// printf("sects size = %zu\n", sizeof(t_sect));
-	bin->lc = (void *)file + sizeof(struct mach_header_64);
+	if (!(bin->sects = (t_sect*)ft_memalloc(sizeof(t_sect) * bin->nsects)))
+	{
+		err_cmd(MALLOC, "system");
+		return (FALSE);
+	}
+	bin->lc = (void *)g_file + sizeof(struct mach_header_64);
 	i = 0;
 	s = 0;
 	while (i < bin->header->ncmds)
@@ -78,4 +82,5 @@ void				get_sections_64(t_bin *bin, char *file)
 		bin->lc = (void *)bin->lc + bin->lc->cmdsize;
 		i++;
 	}
+	return (TRUE);
 }

@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/30 14:31:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/22 17:32:11 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/26 14:29:13 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ uint32_t		swap_32(uint32_t val);
 t_bool			is_consistent(t_bin *bin, t_bool (*check)(t_bin *bin));
 
 t_bool			check_sects_64(t_bin *bin);
-void			get_sections_64(t_bin *bin, char *file);
+t_bool			get_sections_64(t_bin *bin);
 
 t_bool			handle_syms(t_bin *bin, t_bool (*print_sym)(t_bin *bin));
 t_bool			get_syms64(t_bin *bin);
