@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 13:29:29 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/26 14:46:37 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/26 16:55:44 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ static void			store_sections(struct segment_command_64 *seg,
 	i = 0;
 	while (i < seg->nsects)
 	{
-		// ft_printf("index = %d: %p\n", *s, sects[*s]);
 		sects[*s] = find_symtype(sect->sectname);
 		sect = (void *)sect + sizeof(*sect);
 		i++;
@@ -61,26 +60,25 @@ t_bool				get_sections_64(t_bin *bin)
 	struct segment_command_64	*seg;
 	int							s;
 
+	if (bin->nsects * sizeof(struct section_64) >= g_size || !bin->nsects)
+		return (FALSE);
 	if (!(bin->sects = (t_sect*)ft_memalloc(sizeof(t_sect) * bin->nsects)))
 	{
 		err_cmd(MALLOC, "system");
 		return (FALSE);
 	}
 	bin->lc = (void *)g_file + sizeof(struct mach_header_64);
-	i = 0;
+	i = -1;
 	s = 0;
-	while (i < bin->header->ncmds)
+	while (++i < bin->header->ncmds)
 	{
 		if (bin->lc->cmd == LC_SEGMENT_64)
 		{
 			seg = (struct segment_command_64 *)bin->lc;
 			if (seg->nsects > 0)
-			{
 				store_sections(seg, bin->sects, &s);
-			}
 		}
 		bin->lc = (void *)bin->lc + bin->lc->cmdsize;
-		i++;
 	}
 	return (TRUE);
 }

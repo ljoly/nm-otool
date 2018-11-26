@@ -6,12 +6,13 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 12:01:51 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/26 14:04:20 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/26 15:44:40 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 #include "handle_memory.h"
+#include "error.h"
 
 static uint8_t		get_type(uint8_t n_type, uint8_t n_sect, uint64_t n_value,
 	t_sect *sects)
@@ -83,7 +84,11 @@ t_bool				handle_syms(t_bin *bin, t_bool (*get_syms)(t_bin *bin))
 		if (bin->lc->cmd == LC_SYMTAB)
 		{
 			bin->symtab = (struct symtab_command *)bin->lc;
-			bin->syms = (t_sym*)ft_memalloc(sizeof(t_sym) * bin->symtab->nsyms);
+			if (!(bin->syms = (t_sym*)ft_memalloc(sizeof(t_sym) * bin->symtab->nsyms)))
+			{
+				err_cmd(MALLOC, "system");
+				return (free_memory(bin->sects, bin->syms, FALSE));
+			}
 			if (!get_syms(bin))
 				return (free_memory(bin->sects, bin->syms, FALSE));
 			else
