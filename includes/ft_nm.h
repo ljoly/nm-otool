@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/30 14:31:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/26 15:20:49 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/26 19:09:46 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_bool			handle_fat32(t_bool swap);
 
 uint32_t		swap_32(uint32_t val);
 
-t_bool			is_consistent(t_bin *bin, uint32_t lc_segment,
+t_bool			cmd_is_consistent(t_bin *bin, uint32_t lc_segment,
 	t_bool (*check)(t_bin *bin));
 
 t_bool			check_sects_64(t_bin *bin);

@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 19:31:58 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/22 17:34:53 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/26 19:57:33 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,28 @@
 t_bool		handle_fat32(t_bool swap)
 {
 	struct fat_header	*header;
+	struct fat_arch		*arch;
 	uint32_t			i;
 
-	if (swap)
-		ft_putendl("SWAP");
+	swap = 1;
 	header = (struct fat_header *)g_file;
 	if (!access_at(g_file + sizeof(*header)))
 	{
+		ft_putendl("NO_ACCESS");
 		return (FALSE);
 	}
+	arch = (struct fat_arch *)g_file + sizeof(*header);
 	i = 0;
-	while (i < header->nfat_arch)
+	ft_printf("n_arch = %u\n", swap_32(header->nfat_arch));
+	while (i < swap_32(header->nfat_arch))
 	{
+		if (!access_at((void*)arch + sizeof(*arch)))
+			return (FALSE);
+		if ((swap_32(arch->cputype) == CPU_TYPE_X86_64))
+			ft_putendl("CPU FOUND");
+		else
+			ft_printf("cpu_type = %zu\n", swap_32(arch->cputype));
+		arch = (void*)arch + sizeof(*arch);
 		i++;
 	}
 	return (TRUE);
