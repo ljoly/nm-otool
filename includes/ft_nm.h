@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/30 14:31:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/26 19:09:46 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/27 17:12:30 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,13 @@ int				g_exit_status;
 ** file data
 */
 
-void			*g_file;
-uint32_t		g_size;
-t_bool			access_at(const void *ptr);
+typedef struct	s_file
+{
+	void		*ptr;
+	uint32_t	size;
+}				t_file;
+
+t_bool			access_at(t_file f, const void *ptr);
 
 /*
 ** parsing: header, sections, segments and symbols
@@ -51,19 +55,20 @@ typedef struct	s_bin
 }				t_bin;
 
 void			handle_arg(const char *arg, int *fd);
-t_bool			handle_64(t_bool swap);
-t_bool			handle_fat32(t_bool swap);
+t_bool			handle_64(t_file f, const char *arg, t_bool swap);
+t_bool			handle_fat32(t_file f, const char *arg, t_bool swap);
 
-uint32_t		swap_32(uint32_t val);
+uint32_t		swap_32(uint32_t val, t_bool swap);
 
-t_bool			cmd_is_consistent(t_bin *bin, uint32_t lc_segment,
+t_bool			cmd_is_consistent(t_file f, t_bin *bin, uint32_t lc_segment,
 	t_bool (*check)(t_bin *bin));
 
 t_bool			check_sects_64(t_bin *bin);
-t_bool			get_sections_64(t_bin *bin);
+t_bool			get_sections_64(t_file f, const char *arg, t_bin *bin);
 
-t_bool			handle_syms(t_bin *bin, t_bool (*print_sym)(t_bin *bin));
-t_bool			get_syms64(t_bin *bin);
+t_bool			handle_syms(t_file f, const char *arg, t_bin *bin,
+	t_bool (*print_sym)(t_file f, t_bin *bin));
+t_bool			get_syms64(t_file f, t_bin *bin);
 
 void			sort_syms(t_sym *syms, uint32_t size);
 

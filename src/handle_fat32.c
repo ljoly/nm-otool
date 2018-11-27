@@ -6,37 +6,55 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 19:31:58 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/26 19:57:33 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/27 18:04:29 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 #include "handle_memory.h"
+#include "handle_magic.h"
 
-t_bool		handle_fat32(t_bool swap)
+static t_file	get_mach_o_file(void *file, struct fat_arch *arch)
+{
+	t_file		mach_o;
+
+	printf("ptr = %p\n", file + arch->offset);
+	mach_o.ptr = file + arch->offset;
+	mach_o.size = arch->size;
+	return (mach_o);
+}
+
+t_bool			handle_fat32(t_file f, const char *arg, t_bool swap)
 {
 	struct fat_header	*header;
 	struct fat_arch		*arch;
+	t_file				mach_o;
+	int					magic;
 	uint32_t			i;
 
-	swap = 1;
-	header = (struct fat_header *)g_file;
-	if (!access_at(g_file + sizeof(*header)))
+	header = (struct fat_header *)f.ptr;
+	if (!access_at(f, f.ptr + sizeof(*header)))
 	{
-		ft_putendl("NO_ACCESS");
 		return (FALSE);
 	}
-	arch = (struct fat_arch *)g_file + sizeof(*header);
+	arch = f.ptr + sizeof(*header);
 	i = 0;
-	ft_printf("n_arch = %u\n", swap_32(header->nfat_arch));
-	while (i < swap_32(header->nfat_arch))
+	while (i < swap_32(header->nfat_arch, swap))
 	{
-		if (!access_at((void*)arch + sizeof(*arch)))
+		if (!access_at(f, (void*)arch + sizeof(*arch)))
 			return (FALSE);
-		if ((swap_32(arch->cputype) == CPU_TYPE_X86_64))
-			ft_putendl("CPU FOUND");
-		else
-			ft_printf("cpu_type = %zu\n", swap_32(arch->cputype));
+		if ((swap_32(arch->cputype, swap) == CPU_TYPE_X86_64))
+		{
+			if (!access_at(f, f.ptr + arch->offset))
+				return (FALSE);
+			mach_o = get_mach_o_file(f.ptr, arch);
+			ft_putendl("HAHAHA");
+			magic = *(int *)mach_o.ptr;
+			handle_magic(magic, mach_o, arg);
+			break ;
+		}
+		// else
+			// ft_printf("cpu_type = %zu\n", swap_32(arch->cputype, swap));
 		arch = (void*)arch + sizeof(*arch);
 		i++;
 	}

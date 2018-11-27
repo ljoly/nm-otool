@@ -6,19 +6,21 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 17:49:18 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/26 19:36:05 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/27 18:36:35 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 
 /*
-** checking offsets
+** checking offsets:
+**   f.ptr is the address of the mapped file
+**   ptr is the pointer to check
 */
 
-t_bool		access_at(const void *ptr)
+t_bool		access_at(t_file f, const void *ptr)
 {
-	if (ptr - g_file < 0 && ptr - g_file > g_size)
+	if (ptr - f.ptr < 0 && ptr - f.ptr > f.size)
 	{
 		ft_putendl("NO_ACCESS");
 		return (FALSE);
@@ -47,10 +49,10 @@ t_bool		check_sects_64(t_bin *bin)
 	return (TRUE);
 }
 
-t_bool		cmd_is_consistent(t_bin *bin, uint32_t lc_segment,
+t_bool		cmd_is_consistent(t_file f, t_bin *bin, uint32_t lc_segment,
 	t_bool (*check)(t_bin *bin))
 {
-	if (bin->lc->cmdsize <= 0 || !access_at((void*)bin->lc + bin->lc->cmdsize))
+	if (bin->lc->cmdsize <= 0 || !access_at(f, (void*)bin->lc + bin->lc->cmdsize))
 	{
 		return (FALSE);
 	}
