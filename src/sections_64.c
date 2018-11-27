@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 13:29:29 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/26 16:55:44 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/27 12:29:15 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ t_bool				get_sections_64(t_bin *bin)
 		return (FALSE);
 	}
 	bin->lc = (void *)g_file + sizeof(struct mach_header_64);
-	i = -1;
+	i = 0;
 	s = 0;
-	while (++i < bin->header->ncmds)
+	while (i < bin->header->ncmds)
 	{
 		if (bin->lc->cmd == LC_SEGMENT_64)
 		{
@@ -79,6 +79,7 @@ t_bool				get_sections_64(t_bin *bin)
 				store_sections(seg, bin->sects, &s);
 		}
 		bin->lc = (void *)bin->lc + bin->lc->cmdsize;
+		i++;
 	}
 	return (TRUE);
 }
