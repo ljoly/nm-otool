@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 19:31:58 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/27 18:04:29 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/28 19:52:18 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ t_bool			handle_fat32(t_file f, const char *arg, t_bool swap)
 			return (FALSE);
 		if ((swap_32(arch->cputype, swap) == CPU_TYPE_X86_64))
 		{
+			ft_putendl("CPU FOUND");
 			if (!access_at(f, f.ptr + arch->offset))
 				return (FALSE);
 			mach_o = get_mach_o_file(f.ptr, arch);

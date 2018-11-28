@@ -6,59 +6,102 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 17:49:18 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/27 18:36:35 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/28 19:54:32 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 
 /*
-** checking offsets:
-**   f.ptr is the address of the mapped file
-**   ptr is the pointer to check
+** checking offsets
 */
 
 t_bool		access_at(t_file f, const void *ptr)
 {
-	if (ptr - f.ptr < 0 && ptr - f.ptr > f.size)
-	{
-		ft_putendl("NO_ACCESS");
-		return (FALSE);
-	}
-	return (TRUE);
-	// return (ptr - g_file >= 0 && ptr - g_file <= g_size);
+	return (ptr - f.ptr > 0 && ptr < f.ptr + f.size);
 }
 
 /*
 ** checking the reliability of:
-**   sizeof struct segment/sections
 **   cmdsize
 **   nsects
+**   nsyms
 */
 
-t_bool		check_sects_64(t_bin *bin)
+t_bool		check_symtab(t_file f, t_bin *bin, t_bool bit64)
 {
-	struct segment_command_64	*seg;
+	struct nlist		*table;
+	struct nlist_64		*table64;
+	char				*strtable;
+	uint32_t			nsyms;
+	void				*ptr;
 
-	seg = (struct segment_command_64*)bin->lc;
-	if (seg->nsects * sizeof(struct section_64) + sizeof(*seg) != seg->cmdsize)
-	{
+	table = f.ptr + bin->symtab->symoff;
+	table64 = f.ptr + bin->symtab->symoff;
+	strtable = f.ptr + bin->symtab->stroff;
+	nsyms = bin->symtab->nsyms;
+	if (bit64)
+		ptr = (void*)table64 + nsyms * sizeof(*table64);
+	else
+		ptr = (void*)table + nsyms * sizeof(*table);
+	if (!access_at(f, ptr))
 		return (FALSE);
-	}
-	bin->nsects += seg->nsects;
+	if (bit64)
+		ptr = strtable + table64[nsyms - 1].n_un.n_strx;
+	else
+		ptr = strtable + table[nsyms - 1].n_un.n_strx;
+	if (!access_at(f, ptr))
+		return (FALSE);
 	return (TRUE);
 }
 
-t_bool		cmd_is_consistent(t_file f, t_bin *bin, uint32_t lc_segment,
-	t_bool (*check)(t_bin *bin))
+t_bool		check_sects(t_bin *bin, t_bool bit64)
 {
-	if (bin->lc->cmdsize <= 0 || !access_at(f, (void*)bin->lc + bin->lc->cmdsize))
+	struct segment_command		*seg;
+	struct segment_command_64	*seg64;
+
+	seg = (struct segment_command*)bin->lc;
+	seg64 = (struct segment_command_64*)bin->lc;
+	if (bit64)
+	{
+		if (seg64->nsects * sizeof(struct section_64) + sizeof(*seg64)
+			!= seg64->cmdsize)
+		{
+			return (FALSE);
+		}
+		bin->nsects += seg64->nsects;
+	}
+	else
+	{
+		if (seg->nsects * sizeof(struct section) + sizeof(*seg) != seg->cmdsize)
+		{
+			return (FALSE);
+		}
+		bin->nsects += seg->nsects;
+	}
+	return (TRUE);
+}
+
+t_bool		cmd_is_consistent(t_file f, t_bin *bin, t_bool bit64)
+{
+	if (!access_at(f, (void*)bin->lc + bin->lc->cmdsize))
 	{
 		return (FALSE);
 	}
-	if (bin->lc->cmd == lc_segment && !check(bin))
+	if (bin->lc->cmd == LC_SEGMENT || bin->lc->cmd == LC_SEGMENT_64)
 	{
-		return (FALSE);
+		if (!check_sects(bin, bit64))
+		{
+			return (FALSE);
+		}
+	}
+	else if (bin->lc->cmd == LC_SYMTAB)
+	{
+		bin->symtab = (struct symtab_command *)bin->lc;
+		if (!check_symtab(f, bin, bit64))
+		{
+			return (FALSE);
+		}
 	}
 	return (TRUE);
 }

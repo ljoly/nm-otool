@@ -6,23 +6,18 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:53:59 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/27 18:21:11 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/28 18:39:32 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 #include "handle_memory.h"
 
-static void		swap64(void)
-{
-	ft_putendl("SWAP64");
-	exit(0);
-}
-
 static void		init_data(void *file, t_bin *bin)
 {
 	bin->header = (struct mach_header *)file;
 	bin->lc = file + sizeof(struct mach_header_64);
+	bin->symtab = NULL;
 	bin->sects = NULL;
 	bin->syms = NULL;
 	bin->nsects = 0;
@@ -33,9 +28,8 @@ t_bool			handle_64(t_file f, const char *arg, t_bool swap)
 	t_bin		bin;
 	uint32_t	sizeof_cmds;
 	uint32_t	i;
-	
-	if (swap)
-		swap64();
+
+	swap = 0;
 	init_data(f.ptr, &bin);
 	if (!access_at(f, f.ptr + sizeof(struct mach_header_64)))
 		return (FALSE);
@@ -45,8 +39,10 @@ t_bool			handle_64(t_file f, const char *arg, t_bool swap)
 	i = 0;
 	while (i < bin.header->ncmds)
 	{
-		if (!cmd_is_consistent(f, &bin, LC_SEGMENT_64, &check_sects_64))
+		if (!cmd_is_consistent(f, &bin, TRUE))
+		{
 			return (FALSE);
+		}
 		sizeof_cmds += bin.lc->cmdsize;
 		bin.lc = (void *)bin.lc + bin.lc->cmdsize;
 		i++;
