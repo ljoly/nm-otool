@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:53:59 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/28 18:39:32 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/28 20:09:37 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,7 @@ t_bool			handle_64(t_file f, const char *arg, t_bool swap)
 	while (i < bin.header->ncmds)
 	{
 		if (!cmd_is_consistent(f, &bin, TRUE))
-		{
 			return (FALSE);
-		}
 		sizeof_cmds += bin.lc->cmdsize;
 		bin.lc = (void *)bin.lc + bin.lc->cmdsize;
 		i++;

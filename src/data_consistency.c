@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 17:49:18 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/28 19:54:32 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/28 20:11:02 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ t_bool		check_sects(t_bin *bin, t_bool bit64)
 	}
 	else
 	{
-		if (seg->nsects * sizeof(struct section) + sizeof(*seg) != seg->cmdsize)
+		if (seg->nsects * sizeof(struct section) + sizeof(*seg)
+			!= seg->cmdsize)
 		{
 			return (FALSE);
 		}
