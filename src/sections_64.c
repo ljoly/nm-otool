@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 13:29:29 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/27 15:39:57 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/28 20:19:22 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ t_bool				get_sections_64(t_file f, const char *arg, t_bin *bin)
 	struct segment_command_64	*seg;
 	int							s;
 
-	if (bin->nsects * sizeof(struct section_64) >= f.size || !bin->nsects)
-		return (FALSE);
 	if (!(bin->sects = (t_sect*)ft_memalloc(sizeof(t_sect) * bin->nsects)))
 	{
 		err_cmd(MALLOC, arg);
