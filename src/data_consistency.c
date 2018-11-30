@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 17:49:18 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/30 17:15:04 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/30 17:24:45 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ static t_bool		check_sects(t_bin *bin, t_bool bit64)
 	return (TRUE);
 }
 
-static t_bool		check_offsets(t_file f, t_bin *bin, t_bool bit64)
+static t_bool		check_seg(t_file f, t_bin *bin, t_bool bit64)
 {
 	struct segment_command		*seg;
 	struct segment_command_64	*seg64;
@@ -123,9 +123,9 @@ t_bool		cmd_is_consistent(t_file f, t_bin *bin, t_bool bit64)
 	}
 	if (bin->lc->cmd == LC_SEGMENT || bin->lc->cmd == LC_SEGMENT_64)
 	{
-		if (!check_offsets(f, bin, bit64))
+		if (!check_seg(f, bin, bit64))
 		{
-			ft_putendl("OFFSETS");
+			ft_putendl("SEG OFFSETS");
 			return (FALSE);
 		}
 		if (!check_sects(bin, bit64))
