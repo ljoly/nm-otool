@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 17:49:18 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/29 17:43:23 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/30 17:15:04 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** checking offsets
 */
 
-t_bool		access_at(t_file f, void *ptr)
+t_bool		access_at(t_file f, const void *ptr)
 {
 	if (!(ptr - f.ptr >= 0 && ptr < f.ptr + f.size))
 	{
@@ -105,7 +105,9 @@ static t_bool		check_offsets(t_file f, t_bin *bin, t_bool bit64)
 	}
 	else
 	{
-		if (!access_at(f, f.ptr + seg->fileoff + seg->filesize))		
+		if (!(seg->fileoff + seg->filesize))
+			return (TRUE);
+		if (!access_at(f, f.ptr + seg->fileoff + seg->filesize - 1))		
 		{
 			return (FALSE);
 		}
@@ -123,14 +125,12 @@ t_bool		cmd_is_consistent(t_file f, t_bin *bin, t_bool bit64)
 	{
 		if (!check_offsets(f, bin, bit64))
 		{
-			ft_putendl("OFF");
-
+			ft_putendl("OFFSETS");
 			return (FALSE);
 		}
 		if (!check_sects(bin, bit64))
 		{
 			ft_putendl("SECTS");
-			
 			return (FALSE);
 		}
 	}

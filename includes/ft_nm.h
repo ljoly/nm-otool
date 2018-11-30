@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/30 14:31:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/30 17:05:26 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/30 17:11:41 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct	s_file
 	t_bool		swap;
 }				t_file;
 
-t_bool			access_at(t_file f, void *ptr);
+t_bool			access_at(t_file f, const void *ptr);
 
 /*
 ** parsing: header, sections, segments and symbols
