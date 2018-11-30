@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 19:31:58 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/28 19:52:18 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/30 17:08:42 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ static t_file	get_mach_o_file(void *file, struct fat_arch *arch)
 {
 	t_file		mach_o;
 
-	printf("ptr = %p\n", file + arch->offset);
+	// printf("ptr = %p\n", file + arch->offset);
 	mach_o.ptr = file + arch->offset;
 	mach_o.size = arch->size;
 	return (mach_o);
 }
 
-t_bool			handle_fat32(t_file f, const char *arg, t_bool swap)
+t_bool			handle_fat32(t_file f, const char *arg)
 {
 	struct fat_header	*header;
 	struct fat_arch		*arch;
@@ -39,11 +39,11 @@ t_bool			handle_fat32(t_file f, const char *arg, t_bool swap)
 	}
 	arch = f.ptr + sizeof(*header);
 	i = 0;
-	while (i < swap_32(header->nfat_arch, swap))
+	while (i < swap_32(header->nfat_arch, f.swap))
 	{
 		if (!access_at(f, (void*)arch + sizeof(*arch)))
 			return (FALSE);
-		if ((swap_32(arch->cputype, swap) == CPU_TYPE_X86_64))
+		if ((swap_32(arch->cputype, f.swap) == CPU_TYPE_X86_64))
 		{
 			ft_putendl("CPU FOUND");
 			if (!access_at(f, f.ptr + arch->offset))

@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:57:52 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/27 18:00:35 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/11/30 17:09:27 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void				handle_magic(const int magic, t_file f, const char *arg)
 	{
 		if ((unsigned int)magic == g_nums[i].num)
 		{
-			if (g_nums[i].cmd(f, arg, g_nums[i].swap))
+			f.swap = g_nums[i].swap;
+			if (g_nums[i].cmd(f, arg))
 				valid_file = TRUE;
 			break ;
 		}
