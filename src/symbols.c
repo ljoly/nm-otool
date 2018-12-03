@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 12:01:51 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/03 14:07:57 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/03 15:13:28 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static uint8_t		get_type(uint8_t n_type, uint8_t n_sect, uint64_t n_value,
 	return (t);
 }
 
-t_bool				get_syms64(t_file f, t_mach *o)
+t_bool				get_syms_64(t_file f, t_mach *o)
 {
 	uint32_t		i;
 	struct nlist_64	*table;

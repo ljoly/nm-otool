@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/30 14:31:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/03 15:05:09 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/03 15:13:32 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_bool			get_sections_64(t_file f, const char *arg, t_mach *o);
 
 t_bool			handle_syms(t_file f, const char *arg, t_mach *o,
 	t_bool (*print_sym)(t_file f, t_mach *o));
-t_bool			get_syms64(t_file f, t_mach *o);
+t_bool			get_syms_64(t_file f, t_mach *o);
 
 void			sort_syms(t_sym *syms, uint32_t size);
 

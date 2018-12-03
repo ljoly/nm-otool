@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:53:59 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/03 14:04:58 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/03 15:13:45 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,5 @@ t_bool			handle_64(t_file f, const char *arg)
 	if (sizeof_cmds != o.header->sizeofcmds || !get_sections_64(f, arg, &o))
 		return (FALSE);
 	o.lc = f.ptr + sizeof(struct mach_header_64);
-	return (handle_syms(f, arg, &o, &get_syms64));
+	return (handle_syms(f, arg, &o, &get_syms_64));
 }
