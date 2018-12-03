@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/30 14:31:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/03 15:13:32 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/03 16:50:44 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <mach-o/loader.h>
 # include <mach-o/nlist.h>
 # include <mach-o/fat.h>
+# include <mach-o/ranlib.h>
 # include <sys/stat.h>
 # include "sections.h"
 # include "symbols.h"
@@ -43,9 +44,11 @@ typedef struct	s_file
 t_bool			access_at(t_file f, const void *ptr);
 
 void			handle_arg(const char *arg, int *fd);
+
 t_bool			handle_64(t_file f, const char *arg);
 t_bool			handle_fat_32(t_file f, const char *arg);
 t_bool			handle_fat_64(t_file f, const char *arg);
+t_bool			handle_arch(t_file f, const char *arg);
 
 uint32_t		swap_32(uint32_t val, t_bool swap);
 

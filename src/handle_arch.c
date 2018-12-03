@@ -1,34 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fat.h                                              :+:      :+:    :+:   */
+/*   handle_arch.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/03 14:00:22 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/03 16:59:54 by ljoly            ###   ########.fr       */
+/*   Created: 2018/12/03 16:30:39 by ljoly             #+#    #+#             */
+/*   Updated: 2018/12/03 17:00:29 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FAT_H
-# define FAT_H
+#include "ft_nm.h"
 
-# include "ft_nm.h"
-
-typedef struct	s_fat_32
+t_bool			handle_arch(t_file f, const char *arg)
 {
-	struct fat_header	*header;
-	struct fat_arch		*arch;
-	t_file				mach_o;
-	int					magic;
-}				t_fat_32;
-
-typedef struct	s_fat_64
-{
-	struct fat_header	*header;
-	struct fat_arch_64	*arch;
-	t_file				mach_o;
-	int					magic;
-}				t_fat_64;
-
-#endif
+	f.ptr = NULL;
+	ft_putendl(arg);
+	return (TRUE);
+}

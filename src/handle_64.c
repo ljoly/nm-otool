@@ -6,12 +6,12 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:53:59 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/03 15:13:45 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/03 16:31:30 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
-#include "handle_memory.h"
+// #include "handle_memory.h"
 
 static void		init_data(t_file *f, t_mach *o)
 {
