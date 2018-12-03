@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 19:31:58 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/03 14:27:40 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/03 14:34:12 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,20 @@ static t_file	get_mach_o_file(void *file, struct fat_arch *arch, t_bool swap)
 	return (mach_o);
 }
 
+static void		init_data(t_file *f, t_fat *fat)
+{
+	fat->header = (struct fat_header *)f->ptr;
+	fat->arch = f->ptr + sizeof(*fat->header);
+}
+
 t_bool			handle_fat32(t_file f, const char *arg)
 {
 	t_fat		fat;
 	uint32_t	i;
 
-	fat.header = (struct fat_header *)f.ptr;
+	init_data(&f, &fat);
 	if (!access_at(f, f.ptr + sizeof(*fat.header)))
 		return (FALSE);
-	fat.arch = f.ptr + sizeof(*fat.header);
 	i = 0;
 	while (i < swap_32(fat.header->nfat_arch, f.swap))
 	{
