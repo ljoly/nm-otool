@@ -6,15 +6,15 @@
 #    By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/10/30 14:53:21 by ljoly             #+#    #+#              #
-#    Updated: 2018/11/28 17:52:20 by ljoly            ###   ########.fr        #
+#    Updated: 2018/12/03 12:14:07 by ljoly            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_nm
 
 SRC = main.c handle_arg.c error.c handle_magic.c handle_64.c sections_64.c \
-		symbols.c sort.c free_memory.c data_consistency.c print.c \
-		handle_fat32.c swaps.c \
+		symbols.c sort.c free_memory.c data_consistency_64.c print.c \
+		handle_fat32.c swaps.c check_access.c data_consistency_32.c \
 
 SRC_PATH = ./src/
 OBJ_PATH = ./obj/
