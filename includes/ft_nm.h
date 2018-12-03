@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/30 14:31:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/03 14:05:53 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/03 14:24:03 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ typedef struct	s_file
 }				t_file;
 
 t_bool			access_at(t_file f, const void *ptr);
-
 
 void			handle_arg(const char *arg, int *fd);
 t_bool			handle_64(t_file f, const char *arg);
