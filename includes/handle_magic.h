@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 19:35:27 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/03 17:29:21 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/03 18:37:21 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 # define SWAP 1
 # define NOSWAP 0
 
-# define AR_MAGIC_64 0xa3e686372613c21
-# define AR_MAGIC 0xa3e6863
+# define AR_MAGIC 0xa3e686372613c21
+# define AR_MAG 0xa3e6863
 
 typedef struct	s_magic
 {
@@ -29,6 +29,6 @@ typedef struct	s_magic
 	t_bool			(*cmd)(t_file f, const char *arg);
 }				t_magic;
 
-void			handle_magic(const int magic, t_file f, const char *arg);
+void			handle_magic(int magic, t_file f, const char *arg);
 
 #endif

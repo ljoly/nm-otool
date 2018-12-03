@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:58:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/03 17:36:33 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/03 18:12:34 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,7 @@ void			handle_arg(const char *arg, int *fd)
 		err_cmd(MMAP, arg);
 		return ;
 	}
-	if (*(int64_t*)f.ptr == AR_MAGIC_64)
-		magic = AR_MAGIC;
-	else
-		magic = *(int *)f.ptr;
+	magic = *(int *)f.ptr;
 	handle_magic(magic, f, arg);
 	if (munmap(f.ptr, f.size) < 0)
 	{
