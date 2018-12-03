@@ -1,33 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print.c                                            :+:      :+:    :+:   */
+/*   macho.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/21 18:29:53 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/03 14:09:11 by ljoly            ###   ########.fr       */
+/*   Created: 2018/12/03 14:01:51 by ljoly             #+#    #+#             */
+/*   Updated: 2018/12/03 14:03:53 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_nm.h"
+#include "sections.h"
+#include "symbols.h"
 
-void	print_syms(const t_mach o)
+/*
+** parsing: header, sections, segments and symbols
+*/
+
+typedef struct	s_mach
 {
-	uint32_t	i;
-
-	i = 0;
-	while (i < o.symtab->nsyms)
-	{
-		if (o.syms[i].type == 'u' || o.syms[i].type == 'U')
-		{
-			ft_printf("%18c %s\n", o.syms[i].type, o.syms[i].name);
-		}
-		else if (o.syms[i].type)
-		{
-			ft_printf("%.16llx %c %s\n", o.syms[i].value, o.syms[i].type,
-				o.syms[i].name);
-		}
-		i++;
-	}
-}
+	struct mach_header		*header;
+	struct load_command		*lc;
+	struct symtab_command	*symtab;
+	uint32_t				nsects;
+	t_sect					*sects;
+	t_sym					*syms;
+}				t_mach;

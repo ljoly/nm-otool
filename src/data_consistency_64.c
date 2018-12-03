@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 17:49:18 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/03 13:42:09 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/03 14:08:45 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,16 @@
 **   nsyms
 */
 
-static t_bool		check_symtab(t_file f, t_bin *bin)
+static t_bool		check_symtab(t_file f, t_mach *o)
 {
 	struct nlist_64		*table;
 	char				*strtable;
 	uint32_t			nsyms;
 	void				*ptr;
 
-	table = f.ptr + bin->symtab->symoff;
-	strtable = f.ptr + bin->symtab->stroff;
-	nsyms = bin->symtab->nsyms;
+	table = f.ptr + o->symtab->symoff;
+	strtable = f.ptr + o->symtab->stroff;
+	nsyms = o->symtab->nsyms;
 	ptr = (void*)table + nsyms * sizeof(*table);
 	if (!access_at(f, ptr))
 	{
@@ -43,25 +43,25 @@ static t_bool		check_symtab(t_file f, t_bin *bin)
 	return (TRUE);
 }
 
-static t_bool		check_sects(t_bin *bin)
+static t_bool		check_sects(t_mach *o)
 {
 	struct segment_command_64	*seg;
 
-	seg = (struct segment_command_64*)bin->lc;
+	seg = (struct segment_command_64*)o->lc;
 	if (seg->nsects * sizeof(struct section_64) + sizeof(*seg)
 		!= seg->cmdsize)
 	{
 		return (FALSE);
 	}
-	bin->nsects += seg->nsects;
+	o->nsects += seg->nsects;
 	return (TRUE);
 }
 
-static t_bool		check_seg(t_file f, t_bin *bin)
+static t_bool		check_seg(t_file f, t_mach *o)
 {
 	struct segment_command_64	*seg;
 
-	seg = (struct segment_command_64*)bin->lc;
+	seg = (struct segment_command_64*)o->lc;
 	if (!(seg->fileoff + seg->filesize))
 	{
 		return (TRUE);
@@ -73,29 +73,29 @@ static t_bool		check_seg(t_file f, t_bin *bin)
 	return (TRUE);
 }
 
-t_bool		cmd64_is_consistent(t_file f, t_bin *bin)
+t_bool		cmd64_is_consistent(t_file f, t_mach *o)
 {
-	if (!access_at(f, (void*)bin->lc + bin->lc->cmdsize))
+	if (!access_at(f, (void*)o->lc + o->lc->cmdsize))
 	{
 		return (FALSE);
 	}
-	if (bin->lc->cmd == LC_SEGMENT_64)
+	if (o->lc->cmd == LC_SEGMENT_64)
 	{
-		if (!check_seg(f, bin))
+		if (!check_seg(f, o))
 		{
 			ft_putendl("SEG OFFSETS");
 			return (FALSE);
 		}
-		if (!check_sects(bin))
+		if (!check_sects(o))
 		{
 			ft_putendl("SECTS");
 			return (FALSE);
 		}
 	}
-	else if (bin->lc->cmd == LC_SYMTAB)
+	else if (o->lc->cmd == LC_SYMTAB)
 	{
-		bin->symtab = (struct symtab_command *)bin->lc;
-		if (!check_symtab(f, bin))
+		o->symtab = (struct symtab_command *)o->lc;
+		if (!check_symtab(f, o))
 		{
 			ft_putendl("SYMTAB");
 			return (FALSE);

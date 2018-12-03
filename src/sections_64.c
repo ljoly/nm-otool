@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 13:29:29 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/28 20:19:22 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/03 14:06:32 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,29 +54,29 @@ static void			store_sections(struct segment_command_64 *seg,
 	}
 }
 
-t_bool				get_sections_64(t_file f, const char *arg, t_bin *bin)
+t_bool				get_sections_64(t_file f, const char *arg, t_mach *o)
 {
 	uint32_t					i;
 	struct segment_command_64	*seg;
 	int							s;
 
-	if (!(bin->sects = (t_sect*)ft_memalloc(sizeof(t_sect) * bin->nsects)))
+	if (!(o->sects = (t_sect*)ft_memalloc(sizeof(t_sect) * o->nsects)))
 	{
 		err_cmd(MALLOC, arg);
 		return (FALSE);
 	}
-	bin->lc = (void *)f.ptr + sizeof(struct mach_header_64);
+	o->lc = (void *)f.ptr + sizeof(struct mach_header_64);
 	i = 0;
 	s = 0;
-	while (i < bin->header->ncmds)
+	while (i < o->header->ncmds)
 	{
-		if (bin->lc->cmd == LC_SEGMENT_64)
+		if (o->lc->cmd == LC_SEGMENT_64)
 		{
-			seg = (struct segment_command_64 *)bin->lc;
+			seg = (struct segment_command_64 *)o->lc;
 			if (seg->nsects > 0)
-				store_sections(seg, bin->sects, &s);
+				store_sections(seg, o->sects, &s);
 		}
-		bin->lc = (void *)bin->lc + bin->lc->cmdsize;
+		o->lc = (void *)o->lc + o->lc->cmdsize;
 		i++;
 	}
 	return (TRUE);
