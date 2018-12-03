@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/30 14:31:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/03 14:24:03 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/03 15:05:09 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ t_bool			access_at(t_file f, const void *ptr);
 
 void			handle_arg(const char *arg, int *fd);
 t_bool			handle_64(t_file f, const char *arg);
-t_bool			handle_fat32(t_file f, const char *arg);
+t_bool			handle_fat_32(t_file f, const char *arg);
+t_bool			handle_fat_64(t_file f, const char *arg);
 
 uint32_t		swap_32(uint32_t val, t_bool swap);
 

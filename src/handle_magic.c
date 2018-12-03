@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:57:52 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/30 17:09:27 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/03 15:06:00 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ static t_magic		g_nums[] = {// {MH_MAGIC, NOSWAP, handle_32},
 // {MH_CIGAM, SWAP, handle_32},
 	{MH_MAGIC_64, NOSWAP, handle_64},
 	{MH_CIGAM_64, SWAP, handle_64},
-	{FAT_MAGIC, NOSWAP, handle_fat32},
-	{FAT_CIGAM, SWAP, handle_fat32},
-	// {FAT_MAGIC_64, NOSWAP, handle_fat64},
-	// {FAT_CIGAM_64, NOSWAP, handle_fat64},
+	{FAT_MAGIC, NOSWAP, handle_fat_32},
+	{FAT_CIGAM, SWAP, handle_fat_32},
+	{FAT_MAGIC_64, NOSWAP, handle_fat_64},
+	{FAT_CIGAM_64, NOSWAP, handle_fat_64},
 };
 
 void				handle_magic(const int magic, t_file f, const char *arg)

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_fat32.c                                     :+:      :+:    :+:   */
+/*   handle_fat_64.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/21 19:31:58 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/03 14:34:12 by ljoly            ###   ########.fr       */
+/*   Created: 2018/12/03 15:04:04 by ljoly             #+#    #+#             */
+/*   Updated: 2018/12/03 15:07:37 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 #include "handle_memory.h"
 #include "handle_magic.h"
 
-static t_file	get_mach_o_file(void *file, struct fat_arch *arch, t_bool swap)
+static t_file	get_mach_o_file(void *file, struct fat_arch_64 *arch,
+	t_bool swap)
 {
 	t_file		mach_o;
 
@@ -24,15 +25,15 @@ static t_file	get_mach_o_file(void *file, struct fat_arch *arch, t_bool swap)
 	return (mach_o);
 }
 
-static void		init_data(t_file *f, t_fat *fat)
+static void		init_data(t_file *f, t_fat_64 *fat)
 {
 	fat->header = (struct fat_header *)f->ptr;
 	fat->arch = f->ptr + sizeof(*fat->header);
 }
 
-t_bool			handle_fat32(t_file f, const char *arg)
+t_bool			handle_fat_64(t_file f, const char *arg)
 {
-	t_fat		fat;
+	t_fat_64	fat;
 	uint32_t	i;
 
 	init_data(&f, &fat);
