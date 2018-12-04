@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 12:01:51 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/03 15:13:28 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/04 15:07:12 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,13 @@ static uint8_t		get_type(uint8_t n_type, uint8_t n_sect, uint64_t n_value,
 		return (FALSE);
 	}
 	t = n_type & N_TYPE;
-	if (t == N_UNDF)
+	if (t == N_UNDF && n_value)
 	{
-		t = n_value ? 'c' : 'u';
+		t = 'c';
+	}
+	else if (t == N_UNDF && !n_value || t == N_PBUD)
+	{
+		t = 'u';
 	}
 	else if (t == N_ABS)
 	{
@@ -37,6 +41,10 @@ static uint8_t		get_type(uint8_t n_type, uint8_t n_sect, uint64_t n_value,
 		t = sects[n_sect - 1].symbol ? sects[n_sect - 1].symbol : 's';
 	}
 	else if (t ==  N_INDR)
+	{
+		t = 'i';
+	}
+	else
 	{
 		t = '?';
 	}
