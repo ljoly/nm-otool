@@ -6,14 +6,15 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 13:29:29 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/05 12:31:33 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/05 16:30:02 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 #include "error.h"
 
-static t_sect		g_sections[3] = {{SECT_TEXT, 't'},
+static t_sect		g_sections[3] = {
+	{SECT_TEXT, 't'},
 	{SECT_DATA, 'd'},
 	{SECT_BSS, 'b'}};
 
