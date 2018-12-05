@@ -6,39 +6,39 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 16:30:39 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/04 18:30:31 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/05 20:16:44 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
+#include "handle_magic.h"
 #include <ar.h>
+
+#define AR_NAME_SIZE 20
 
 t_bool			handle_arch(t_file f, const char *arg)
 {
-	void			*p;
-	// struct ar_hdr	*ar;
+	t_file			mach_o;
+	struct ar_hdr	*ar;
 	struct ranlib	*ranlib;
-	uint32_t		ranlib_size;
-	uint32_t		i;
+	uint32_t		magic;
 
 	(void)arg;
-	p = f.ptr + SARMAG + sizeof(struct ar_hdr) + 20;
-	if (!access_at(f, p))
-		return (FALSE);
-	ranlib_size = *(uint32_t*)p / sizeof(struct ranlib);
-	p = p + sizeof(uint32_t);
-	ranlib = (struct ranlib*)p;
-	i = 0;
-	while (i < ranlib_size)
+	ar = f.ptr + SARMAG;
+	ranlib = (void*)ar + sizeof(struct ar_hdr) + AR_NAME_SIZE + sizeof(uint32_t);
+	mach_o.ptr = f.ptr + ranlib->ran_off + sizeof(struct ar_hdr) + AR_NAME_SIZE;
+	while (access_at(f, mach_o.ptr))
 	{
-		// if (!access_at(f, ranlib + sizeof(*ranlib)))
-		// 	return (FALSE);
-		// ft_printf("%d: %x && off = %x\n", i, ranlib[i].ran_un.ran_strx, ranlib[i].ran_off);
-		p = f.ptr + ranlib[i].ran_off + sizeof(struct ar_hdr);
-		ft_printf("offset = %u: %s\n", ranlib[i].ran_off, (char*)p);
-		// ranlib = (void*)ranlib + sizeof(*ranlib);
-		// exit(0);
-		i++;
+		magic = *(uint32_t*)mach_o.ptr;
+		mach_o.size = ft_atoi(ar->ar_size);
+		if (ft_strequ((char*)ar + sizeof(struct ar_hdr), "ft_strjoin_and_free.o"))
+		{
+			ft_printf("\n%s(%s):\n", arg, (char*)ar + sizeof(struct ar_hdr));
+			handle_magic(magic, mach_o, arg);
+			break;
+		}
+		ar = (void*)ar + sizeof(struct ar_hdr) + ft_atoi(ar->ar_size);
+		mach_o.ptr = (void*)ar + sizeof(struct ar_hdr) + AR_NAME_SIZE;
 	}
 	return (TRUE);
 }

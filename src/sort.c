@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 12:12:13 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/05 13:48:01 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/05 16:22:03 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 // static t_bool	is_dup(t_sym sym1, t_sym sym2)
 // {
-// 	return (ft_strequ(sym1.name, sym2.name) && sym1.type == sym2.type
-// 		&& sym1.value == sym2.value);
+// 	return (ft_strequ(sym1.name, sym2.name) && sym1.value == sym2.value);
 // }
 
 void		sort_syms(t_sym *syms, uint32_t size)
