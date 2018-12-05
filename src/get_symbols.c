@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   symbols.c                                          :+:      :+:    :+:   */
+/*   get_symbols.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 12:01:51 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/04 16:39:22 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/05 12:39:37 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ t_bool				handle_syms(t_file f, const char *arg, t_mach *o,
 	}
 	free(o->sects);
 	sort_syms(o->syms, o->symtab->nsyms);
+	// remove_dup(o->syms, o->symtab->nsyms);
 	print_syms(*o);
 	return (free_memory(NULL, o->syms, TRUE));
 }

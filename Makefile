@@ -6,14 +6,14 @@
 #    By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/10/30 14:53:21 by ljoly             #+#    #+#              #
-#    Updated: 2018/12/03 16:51:30 by ljoly            ###   ########.fr        #
+#    Updated: 2018/12/05 12:39:47 by ljoly            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_nm
 
-SRC = main.c handle_arg.c error.c handle_magic.c handle_64.c sections_64.c \
-		symbols.c sort.c free_memory.c data_consistency_64.c print.c \
+SRC = main.c handle_arg.c error.c handle_magic.c handle_64.c get_sections_64.c \
+		get_symbols.c sort.c free_memory.c data_consistency_64.c print.c \
 		handle_fat_32.c swaps.c check_access.c data_consistency_32.c \
 		handle_fat_64.c handle_arch.c
 
