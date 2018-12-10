@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/02 14:18:27 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/26 14:21:54 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/10 16:59:12 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,7 @@ static void			err_sys(const t_err err_code, const char *arg)
 
 static void			err_usage(const t_err err_code, const char *arg)
 {
-	if (err_code == ARG)
-	{
-		ft_putendl_fd("Error: no argument provided", STDERR);
-	}
-	else if (err_code == DIR)
+	if (err_code == DIR)
 	{
 		print_err("is a directory", arg);
 	}
@@ -64,7 +60,7 @@ static void			err_usage(const t_err err_code, const char *arg)
 void				err_cmd(const t_err err, const char *arg)
 {
 	g_exit_status = EXIT_FAILURE;
-	if (err == ARG || err == DIR || err == FORMAT)
+	if (err == DIR || err == FORMAT)
 	{
 		err_usage(err, arg);
 	}
