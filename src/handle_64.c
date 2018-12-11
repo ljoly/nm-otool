@@ -6,12 +6,11 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:53:59 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/11 15:38:44 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/11 15:46:22 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
-// #include "handle_memory.h"
 
 static void		init_data(t_file f, t_mach *o)
 {
@@ -32,7 +31,7 @@ t_bool			handle_64(t_file f, const char *arg)
 	init_data(f, &o);
 	if (!access_at(f, f.ptr + sizeof(struct mach_header_64)))
 		return (FALSE);
-	if (!o.header->ncmds && !o.header->sizeofcmds)
+	if (!swp32(o.header->ncmds, f.swp) && !swp32(o.header->sizeofcmds, f.swp))
 		return (TRUE);
 	sizeof_cmds = 0;
 	i = 0;

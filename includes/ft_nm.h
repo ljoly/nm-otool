@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/30 14:31:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/05 12:40:49 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/11 15:46:07 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct	s_file
 {
 	void		*ptr;
 	uint32_t	size;
-	t_bool		swap;
+	t_bool		swp;
 }				t_file;
 
 t_bool			access_at(t_file f, const void *ptr);
@@ -50,7 +50,7 @@ t_bool			handle_fat_32(t_file f, const char *arg);
 t_bool			handle_fat_64(t_file f, const char *arg);
 t_bool			handle_arch(t_file f, const char *arg);
 
-uint32_t		swap_32(uint32_t val, t_bool swap);
+uint32_t		swp32(uint32_t val, t_bool swp);
 
 t_bool			cmd64_is_consistent(t_file f, t_mach *o);
 t_bool			cmd32_is_consistent(t_file f, t_mach *o);

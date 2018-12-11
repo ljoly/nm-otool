@@ -6,15 +6,15 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:27:54 by ljoly             #+#    #+#             */
-/*   Updated: 2018/11/27 14:52:37 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/11 15:50:28 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 
-uint32_t	swap_32(uint32_t val, t_bool swap)
+uint32_t	swp32(uint32_t val, t_bool swp)
 {
-	if (swap)
+	if (swp)
 	{
 		val = ((val << 8) & 0xFF00FF00) | ((val >> 8) & 0xFF00FF);
 		val = (val << 16) | (val >> 16);

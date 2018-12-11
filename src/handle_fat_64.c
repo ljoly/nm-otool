@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 15:04:04 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/03 15:07:37 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/11 15:50:08 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@
 #include "handle_magic.h"
 
 static t_file	get_mach_o_file(void *file, struct fat_arch_64 *arch,
-	t_bool swap)
+	t_bool swp)
 {
 	t_file		mach_o;
 
-	mach_o.ptr = file + swap_32(arch->offset, swap);
-	mach_o.size = swap_32(arch->size, swap);
+	mach_o.ptr = file + swp32(arch->offset, swp);
+	mach_o.size = swp32(arch->size, swp);
 	return (mach_o);
 }
 
@@ -40,15 +40,15 @@ t_bool			handle_fat_64(t_file f, const char *arg)
 	if (!access_at(f, f.ptr + sizeof(*fat.header)))
 		return (FALSE);
 	i = 0;
-	while (i < swap_32(fat.header->nfat_arch, f.swap))
+	while (i < swp32(fat.header->nfat_arch, f.swp))
 	{
 		if (!access_at(f, (void*)fat.arch + sizeof(*fat.arch)))
 			return (FALSE);
-		if ((swap_32(fat.arch->cputype, f.swap) == CPU_TYPE_X86_64))
+		if ((swp32(fat.arch->cputype, f.swp) == CPU_TYPE_X86_64))
 		{
-			if (!access_at(f, f.ptr + swap_32(fat.arch->offset, f.swap)))
+			if (!access_at(f, f.ptr + swp32(fat.arch->offset, f.swp)))
 				return (FALSE);
-			fat.mach_o = get_mach_o_file(f.ptr, fat.arch, f.swap);
+			fat.mach_o = get_mach_o_file(f.ptr, fat.arch, f.swp);
 			fat.magic = *(int *)fat.mach_o.ptr;
 			handle_magic(fat.magic, fat.mach_o, arg);
 			break ;
