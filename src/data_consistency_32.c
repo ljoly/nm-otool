@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 12:13:01 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/03 14:09:48 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/11 12:27:13 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,14 @@ static t_bool		check_seg(t_file f, t_mach *o)
 	{
 		return (TRUE);
 	}
-	if (!access_at(f, f.ptr + seg->fileoff + seg->filesize - 1))		
+	if (!access_at(f, f.ptr + seg->fileoff + seg->filesize - 1))
 	{
 		return (FALSE);
 	}
 	return (TRUE);
 }
 
-t_bool		cmd32_is_consistent(t_file f, t_mach *o)
+t_bool				cmd32_is_consistent(t_file f, t_mach *o)
 {
 	if (!access_at(f, (void*)o->lc + o->lc->cmdsize))
 	{

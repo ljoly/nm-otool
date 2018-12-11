@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 17:49:18 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/03 14:08:45 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/11 12:27:25 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static t_bool		check_seg(t_file f, t_mach *o)
 	return (TRUE);
 }
 
-t_bool		cmd64_is_consistent(t_file f, t_mach *o)
+t_bool				cmd64_is_consistent(t_file f, t_mach *o)
 {
 	if (!access_at(f, (void*)o->lc + o->lc->cmdsize))
 	{
