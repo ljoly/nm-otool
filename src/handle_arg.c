@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:58:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/03 18:12:34 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/11 18:05:19 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void			handle_arg(const char *arg, int *fd)
 		err_cmd(err, arg);
 		return ;
 	}
-	if ((f.ptr = mmap(0, f.size, PROT_READ, MAP_PRIVATE, *fd, 0))
+	if ((f.ptr = mmap(0, f.size, PROT_READ | PROT_WRITE, MAP_PRIVATE, *fd, 0))
 		== MAP_FAILED)
 	{
 		err_cmd(MMAP, arg);
