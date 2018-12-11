@@ -6,17 +6,17 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:53:59 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/03 16:31:30 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/11 15:38:44 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 // #include "handle_memory.h"
 
-static void		init_data(t_file *f, t_mach *o)
+static void		init_data(t_file f, t_mach *o)
 {
-	o->header = (struct mach_header *)f->ptr;
-	o->lc = f->ptr + sizeof(struct mach_header_64);
+	o->header = (struct mach_header *)f.ptr;
+	o->lc = f.ptr + sizeof(struct mach_header_64);
 	o->symtab = NULL;
 	o->sects = NULL;
 	o->syms = NULL;
@@ -29,7 +29,7 @@ t_bool			handle_64(t_file f, const char *arg)
 	uint32_t	sizeof_cmds;
 	uint32_t	i;
 
-	init_data(&f, &o);
+	init_data(f, &o);
 	if (!access_at(f, f.ptr + sizeof(struct mach_header_64)))
 		return (FALSE);
 	if (!o.header->ncmds && !o.header->sizeofcmds)
