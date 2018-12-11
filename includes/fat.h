@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 14:00:22 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/11 19:07:15 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/11 20:18:00 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ typedef struct	s_fat_32
 	uint32_t			nfat_arch;
 	t_file				mach_o;
 	int					magic;
+	t_bool				cpu_type_found;
 }				t_fat_32;
 
 typedef struct	s_fat_64
@@ -31,6 +32,7 @@ typedef struct	s_fat_64
 	uint32_t			nfat_arch;
 	t_file				mach_o;
 	int					magic;
+	t_bool				cpu_type_found;
 }				t_fat_64;
 
 #endif

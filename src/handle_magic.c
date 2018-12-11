@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:57:52 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/11 15:44:59 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/11 21:06:39 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 static t_magic		g_nums[] = {
 	{MH_MAGIC_64, NOSWAP, handle_64},
 	{MH_CIGAM_64, SWAP, handle_64},
-	// {MH_MAGIC, NOSWAP, handle_32},
-	// {MH_CIGAM, SWAP, handle_32},
+	{MH_MAGIC, NOSWAP, handle_32},
+	{MH_CIGAM, SWAP, handle_32},
 	{FAT_MAGIC, NOSWAP, handle_fat_32},
 	{FAT_CIGAM, SWAP, handle_fat_32},
 	{FAT_MAGIC_64, NOSWAP, handle_fat_64},
@@ -55,6 +55,7 @@ void				handle_magic(int magic, t_file f, const char *arg)
 	{
 		if (magic == g_nums[i].num)
 		{
+			ft_printf("magic = %u\n", magic);
 			f.swp = g_nums[i].swp;
 			if (g_nums[i].cmd(f, arg))
 				valid_file = TRUE;

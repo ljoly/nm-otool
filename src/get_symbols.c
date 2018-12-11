@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 12:01:51 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/10 15:47:30 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/11 20:40:30 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,26 @@ static uint8_t		get_type(uint8_t n_type, uint8_t n_sect, uint64_t n_value,
 		t -= 32;
 	}
 	return (t);
+}
+
+t_bool				get_syms_32(t_file f, t_mach *o)
+{
+	uint32_t		i;
+	struct nlist	*table;
+	char			*strtable;
+
+	table = f.ptr + o->symtab->symoff;
+	strtable = f.ptr + o->symtab->stroff;
+	i = 0;
+	while (i < o->symtab->nsyms)
+	{
+		o->syms[i].type = get_type(table[i].n_type, table[i].n_sect,
+			table[i].n_value, o->sects);
+		o->syms[i].value = table[i].n_value;
+		o->syms[i].name = strtable + table[i].n_un.n_strx;
+		i++;
+	}
+	return (TRUE);
 }
 
 t_bool				get_syms_64(t_file f, t_mach *o)
@@ -112,7 +132,7 @@ t_bool				handle_syms(t_file f, const char *arg, t_mach *o,
 	if (o->syms)
 	{
 		sort_syms(o->syms, o->symtab->nsyms);
-		print_syms(*o);
+		get_syms == &get_syms_64 ? print_syms(*o, TRUE) : print_syms(*o, FALSE);
 	}
 	return (free_memory(NULL, o->syms, TRUE));
 }

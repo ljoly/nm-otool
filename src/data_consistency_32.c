@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 12:13:01 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/11 12:27:13 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/11 20:12:01 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,7 @@
 #include "handle_memory.h"
 
 /*
-** checking the reliability of:
-**   cmdsize
-**   nsects
-**   nsyms
+** checking offsets:
 */
 
 static t_bool		check_symtab(t_file f, t_mach *o)
@@ -27,15 +24,15 @@ static t_bool		check_symtab(t_file f, t_mach *o)
 	uint32_t			nsyms;
 	void				*ptr;
 
-	table = f.ptr + o->symtab->symoff;
-	strtable = f.ptr + o->symtab->stroff;
-	nsyms = o->symtab->nsyms;
+	table = f.ptr + swp32(&o->symtab->symoff, f.swp);
+	strtable = f.ptr + swp32(&o->symtab->stroff, f.swp);
+	nsyms = swp32(&o->symtab->nsyms, f.swp);
 	ptr = (void*)table + nsyms * sizeof(*table);
 	if (!access_at(f, ptr))
 	{
 		return (FALSE);
 	}
-	ptr = strtable + table[nsyms - 1].n_un.n_strx;
+	ptr = strtable + swp32(&table[nsyms - 1].n_un.n_strx, f.swp);
 	if (!access_at(f, ptr))
 	{
 		return (FALSE);
@@ -43,12 +40,12 @@ static t_bool		check_symtab(t_file f, t_mach *o)
 	return (TRUE);
 }
 
-static t_bool		check_sects(t_mach *o)
+static t_bool		check_sects(t_file f, t_mach *o)
 {
 	struct segment_command		*seg;
 
 	seg = (struct segment_command*)o->lc;
-	if (seg->nsects * sizeof(struct section) + sizeof(*seg)
+	if (swp32(&seg->nsects, f.swp) * sizeof(struct section) + sizeof(*seg)
 		!= seg->cmdsize)
 	{
 		return (FALSE);
@@ -62,7 +59,7 @@ static t_bool		check_seg(t_file f, t_mach *o)
 	struct segment_command		*seg;
 
 	seg = (struct segment_command*)o->lc;
-	if (!(seg->fileoff + seg->filesize))
+	if (!(swp32(&seg->fileoff, f.swp) + swp32(&seg->filesize, f.swp)))
 	{
 		return (TRUE);
 	}
@@ -75,18 +72,18 @@ static t_bool		check_seg(t_file f, t_mach *o)
 
 t_bool				cmd32_is_consistent(t_file f, t_mach *o)
 {
-	if (!access_at(f, (void*)o->lc + o->lc->cmdsize))
+	if (!access_at(f, (void*)o->lc + swp32(&o->lc->cmdsize, f.swp)))
 	{
 		return (FALSE);
 	}
-	if (o->lc->cmd == LC_SEGMENT)
+	if (swp32(&o->lc->cmd, f.swp) == LC_SEGMENT)
 	{
 		if (!check_seg(f, o))
 		{
 			ft_putendl("SEG OFFSETS");
 			return (FALSE);
 		}
-		if (!check_sects(o))
+		if (!check_sects(f, o))
 		{
 			ft_putendl("SECTS");
 			return (FALSE);
