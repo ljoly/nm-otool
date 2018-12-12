@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/11 19:57:48 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/11 20:03:14 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/12 17:20:33 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ static t_sect		find_symtype(char *sect_name)
 	sect.symbol = FALSE;
 	while (i < sizeof(g_sections) / sizeof(*g_sections))
 	{
-		if (ft_strequ(sect_name, g_sections[i].name))
+		if (!ft_strncmp(sect_name, g_sections[i].name,
+			sizeof((struct section*)0)->sectname))
 		{
 			sect.symbol = g_sections[i].symbol;
 			return (sect);
@@ -77,6 +78,7 @@ t_bool				get_sections_32(t_file f, const char *arg, t_mach *o)
 			if (seg->nsects > 0)
 				store_sections(seg, o->sects, &s);
 		}
+
 		o->lc = (void *)o->lc + o->lc->cmdsize;
 		i++;
 	}
