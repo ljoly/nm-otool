@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/11 19:57:48 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/12 17:20:33 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/12 17:33:19 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ t_bool				get_sections_32(t_file f, const char *arg, t_mach *o)
 			if (seg->nsects > 0)
 				store_sections(seg, o->sects, &s);
 		}
-
 		o->lc = (void *)o->lc + o->lc->cmdsize;
 		i++;
 	}
