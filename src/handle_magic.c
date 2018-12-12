@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:57:52 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/12 17:32:06 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/12 18:33:48 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "handle_magic.h"
 #include "error.h"
 
-static t_magic		g_nums[] = {
+static t_magic		g_nums[9] = {
 	{MH_MAGIC_64, NOSWAP, handle_64},
 	{MH_CIGAM_64, SWAP, handle_64},
 	{MH_MAGIC, NOSWAP, handle_32},
