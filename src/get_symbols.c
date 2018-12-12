@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 12:01:51 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/11 20:40:30 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/12 17:30:22 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ t_bool				get_syms_32(t_file f, t_mach *o)
 	while (i < o->symtab->nsyms)
 	{
 		o->syms[i].type = get_type(table[i].n_type, table[i].n_sect,
-			table[i].n_value, o->sects);
+			swp32(&table[i].n_value, f.swp), o->sects);
 		o->syms[i].value = table[i].n_value;
 		o->syms[i].name = strtable + table[i].n_un.n_strx;
 		i++;
@@ -87,7 +87,7 @@ t_bool				get_syms_64(t_file f, t_mach *o)
 	while (i < o->symtab->nsyms)
 	{
 		o->syms[i].type = get_type(table[i].n_type, table[i].n_sect,
-			table[i].n_value, o->sects);
+			swp64(&table[i].n_value, f.swp), o->sects);
 		o->syms[i].value = table[i].n_value;
 		o->syms[i].name = strtable + table[i].n_un.n_strx;
 		i++;

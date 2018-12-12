@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 12:13:01 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/11 20:12:01 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/12 18:05:14 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "handle_memory.h"
 
 /*
-** checking offsets:
+** checking 32-bit arch offsets:
 */
 
 static t_bool		check_symtab(t_file f, t_mach *o)
@@ -23,19 +23,21 @@ static t_bool		check_symtab(t_file f, t_mach *o)
 	char				*strtable;
 	uint32_t			nsyms;
 	void				*ptr;
+	uint32_t			i;
 
 	table = f.ptr + swp32(&o->symtab->symoff, f.swp);
 	strtable = f.ptr + swp32(&o->symtab->stroff, f.swp);
 	nsyms = swp32(&o->symtab->nsyms, f.swp);
 	ptr = (void*)table + nsyms * sizeof(*table);
-	if (!access_at(f, ptr))
+	i = 0;
+	while (i < nsyms)
 	{
-		return (FALSE);
-	}
-	ptr = strtable + swp32(&table[nsyms - 1].n_un.n_strx, f.swp);
-	if (!access_at(f, ptr))
-	{
-		return (FALSE);
+		if (!access_at(f, ptr))
+		{
+			return (FALSE);
+		}
+		ptr = strtable + swp32(&table[i].n_un.n_strx, f.swp);
+		i++;
 	}
 	return (TRUE);
 }
