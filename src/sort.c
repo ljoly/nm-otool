@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 12:12:13 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/05 16:22:03 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/14 15:28:07 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,30 +19,47 @@
 
 void		sort_syms(t_sym *syms, uint32_t size)
 {
+	t_bool		sorted;
 	uint32_t	i;
+	int			cmp;
 	t_sym		tmp;
 
 	i = 0;
-	while (i < size - 1)
+	sorted = FALSE;
+	while (!sorted)
 	{
-		// if (is_dup(syms[i], syms[i + 1]))
-		// {
-		// 	syms[i + 1].type = FALSE;
-		// 	i = -1;
-		// }
-		if (ft_strcmp(syms[i].name, syms[i + 1].name) > 0)
+		sorted = TRUE;
+		i = 0;
+		while (i < size - 1)
 		{
-			tmp.value = syms[i].value;
-			tmp.type = syms[i].type;
-			tmp.name = syms[i].name;
-			syms[i].value = syms[i + 1].value;
-			syms[i].type = syms[i + 1].type;
-			syms[i].name = syms[i + 1].name;
-			syms[i + 1].value = tmp.value;
-			syms[i + 1].type = tmp.type;
-			syms[i + 1].name = tmp.name;
-			i = -1;
+			cmp = ft_strcmp(syms[i].name, syms[i + 1].name);
+			if (cmp > 0)
+			{
+				tmp.value = syms[i].value;
+				tmp.type = syms[i].type;
+				tmp.name = syms[i].name;
+				syms[i].value = syms[i + 1].value;
+				syms[i].type = syms[i + 1].type;
+				syms[i].name = syms[i + 1].name;
+				syms[i + 1].value = tmp.value;
+				syms[i + 1].type = tmp.type;
+				syms[i + 1].name = tmp.name;
+				sorted = FALSE;
+			}
+			else if (cmp == 0 && syms[i].value > syms[i + 1].value)
+			{
+				tmp.value = syms[i].value;
+				tmp.type = syms[i].type;
+				tmp.name = syms[i].name;
+				syms[i].value = syms[i + 1].value;
+				syms[i].type = syms[i + 1].type;
+				syms[i].name = syms[i + 1].name;
+				syms[i + 1].value = tmp.value;
+				syms[i + 1].type = tmp.type;
+				syms[i + 1].name = tmp.name;
+				sorted = FALSE;
+			}
+			i++;
 		}
-		i++;
 	}
 }
