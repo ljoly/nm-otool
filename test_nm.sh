@@ -4,9 +4,10 @@ GRN="\033[0;32m"
 RED="\033[0;31m"
 NC="\033[0m"
 
-if [ -f "$nm_fails.txt" ]
+if [ -f "nm_fail.txt" ]
     then
-    rm nm_fails.txt
+	echo "OUI"
+    rm nm_fail.txt
 fi
 for filename in /bin/* /sbin/* /usr/lib/* /usr/bin/* /usr/sbin/*; do
     nm $filename > test_nm &
