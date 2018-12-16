@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 16:30:39 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/11 15:36:19 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/16 21:39:54 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,10 @@ static struct ar_hdr	*init_data(t_file f, uint32_t *ar_name_size,
 		+ sizeof(uint32_t);
 	if (!access_at(f, ranlib))
 		return (NULL);
+	ar = f.ptr + ranlib->ran_off;
+	*ar_name_size = ft_atoi(ft_strchr(ar->ar_name, '/') + 1);
 	mach_o->ptr = f.ptr + ranlib->ran_off + sizeof(struct ar_hdr)
 		+ *ar_name_size;
-	ar = (void*)ar + sizeof(struct ar_hdr) + ft_atoi(ar->ar_size);
 	if (!access_at(f, (void*)ar + sizeof(struct ar_hdr)))
 		return (NULL);
 	return (ar);
