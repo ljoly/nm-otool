@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 17:27:54 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/11 19:16:09 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/17 17:25:18 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int			swp_signed32(int *val, t_bool swp)
 {
 	if (swp)
 	{
-    	*val = ((*val << 8) & 0xFF00FF00) | ((*val >> 8) & 0xFF00FF );
+		*val = ((*val << 8) & 0xFF00FF00) | ((*val >> 8) & 0xFF00FF);
 		*val = (*val << 16) | ((*val >> 16) & 0xFFFF);
 	}
 	return (*val);

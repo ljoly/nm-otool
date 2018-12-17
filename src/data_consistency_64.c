@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 17:49:18 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/12 18:10:39 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/17 16:40:29 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,10 @@ t_bool				cmd64_is_consistent(t_file f, t_mach *o)
 	{
 		if (!check_seg(f, o))
 		{
-			ft_putendl("SEG OFFSETS");
 			return (FALSE);
 		}
 		if (!check_sects(f, o))
 		{
-			ft_putendl("SECTS");
 			return (FALSE);
 		}
 	}
@@ -96,7 +94,6 @@ t_bool				cmd64_is_consistent(t_file f, t_mach *o)
 		o->symtab = (struct symtab_command *)o->lc;
 		if (!check_symtab(f, o))
 		{
-			ft_putendl("SYMTAB");
 			return (FALSE);
 		}
 	}

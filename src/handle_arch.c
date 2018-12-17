@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 16:30:39 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/17 15:14:42 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/17 16:42:06 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 #include "handle_magic.h"
 #include <ar.h>
 
-static void				*get_first_o(t_file f, struct ar_hdr **ar, uint32_t *ar_name_size)
+static void				*get_first_o(t_file f, struct ar_hdr **ar,
+	uint32_t *ar_name_size)
 {
 	struct ranlib	*ranlib;
 	uint32_t		offset;

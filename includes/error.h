@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/02 14:22:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/10 16:59:17 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/17 17:36:50 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ typedef enum	e_err
 {
 	NO_ERR,
 	DIR,
-    FORMAT,
+	FORMAT,
 	OPEN,
-    FSTAT,
+	FSTAT,
 	MMAP,
-    MUNMAP,
+	MUNMAP,
 	MALLOC,
 }				t_err;
 

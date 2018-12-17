@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 12:01:51 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/12 17:30:22 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/17 16:45:13 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,38 +20,22 @@ static uint8_t		get_type(uint8_t n_type, uint8_t n_sect, uint64_t n_value,
 	uint8_t			t;
 
 	if (n_type & N_STAB)
-	{
 		return (FALSE);
-	}
 	t = n_type & N_TYPE;
 	if (t == N_UNDF && n_value)
-	{
 		t = 'c';
-	}
 	else if ((t == N_UNDF && !n_value) || t == N_PBUD)
-	{
 		t = 'u';
-	}
 	else if (t == N_ABS)
-	{
 		t = 'a';
-	}
 	else if (t == N_SECT)
-	{
 		t = sects[n_sect - 1].symbol ? sects[n_sect - 1].symbol : 's';
-	}
-	else if (t ==  N_INDR)
-	{
+	else if (t == N_INDR)
 		t = 'i';
-	}
 	else
-	{
 		t = '?';
-	}
 	if (n_type & N_EXT)
-	{
 		t -= 32;
-	}
 	return (t);
 }
 
@@ -116,11 +100,7 @@ t_bool				handle_syms(t_file f, const char *arg, t_mach *o,
 	{
 		if (o->lc->cmd == LC_SYMTAB)
 		{
-			if (!get_symtab(arg, o))
-			{
-				return (free_memory(o->sects, o->syms, FALSE));
-			}
-			if (!get_syms(f, o))
+			if (!get_symtab(arg, o) || !get_syms(f, o))
 			{
 				return (free_memory(o->sects, o->syms, FALSE));
 			}

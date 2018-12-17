@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 19:31:58 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/17 15:29:21 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/17 17:10:05 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,14 @@
 #include "fat.h"
 #include "handle_memory.h"
 #include "handle_magic.h"
+
+static void		print_name_o(t_fat_32 fat, const char *arg, char *cpu_type)
+{
+	if (fat.nfat_arch == 1)
+		ft_printf("%s:\n", arg, cpu_type);
+	else
+		ft_printf("\n%s (for architecture %s):\n", arg, cpu_type);
+}
 
 static t_file	get_mach_o_file(void *file, struct fat_arch *arch, t_bool swp)
 {
@@ -24,7 +32,7 @@ static t_file	get_mach_o_file(void *file, struct fat_arch *arch, t_bool swp)
 	return (mach_o);
 }
 
-static t_bool	handle_32bit_cpu(t_file f, t_fat_32 fat, const char *arg)
+static t_bool	handle_cpu_type(t_file f, t_fat_32 fat, const char *arg)
 {
 	uint32_t	i;
 	uint32_t	j;
@@ -36,20 +44,16 @@ static t_bool	handle_32bit_cpu(t_file f, t_fat_32 fat, const char *arg)
 	{
 		if (!access_at(f, f.ptr + swp32(&fat.arch->offset, f.swp)))
 			return (FALSE);
-		j = 0;
+		j = -1;
 		cpu_type = NULL;
-		while (j < sizeof(g_cpu32) / sizeof(*g_cpu32))
+		while (++j < sizeof(g_cpu32) / sizeof(*g_cpu32))
 		{
 			if (fat.arch->cputype == g_cpu32[j].type)
 				cpu_type = g_cpu32[j].name;
-			j++;
 		}
 		fat.mach_o = get_mach_o_file(f.ptr, fat.arch, f.swp);
 		fat.magic = *(int *)fat.mach_o.ptr;
-		if (fat.nfat_arch == 1)
-			ft_printf("%s:\n", arg, cpu_type);
-		else
-			ft_printf("\n%s (for architecture %s):\n", arg, cpu_type);
+		print_name_o(fat, arg, cpu_type);
 		handle_magic(fat.magic, fat.mach_o, arg);
 		fat.arch = (void*)fat.arch + sizeof(*fat.arch);
 		i++;
@@ -91,7 +95,5 @@ t_bool			handle_fat_32(t_file f, const char *arg)
 		fat.arch = (void*)fat.arch + sizeof(*fat.arch);
 		i++;
 	}
-	if (!fat.cpu_type_found)
-		return (handle_32bit_cpu(f, fat, arg));
-	return (TRUE);
+	return (fat.cpu_type_found ? TRUE : handle_cpu_type(f, fat, arg));
 }

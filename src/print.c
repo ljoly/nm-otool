@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 18:29:53 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/11 20:52:19 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/17 17:13:54 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void		print_syms64(const t_mach o)
 	}
 }
 
-void	print_syms(const t_mach o, t_bool arch_64)
+void			print_syms(const t_mach o, t_bool arch_64)
 {
 	if (arch_64)
 	{
