@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 15:04:04 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/13 20:55:18 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/17 15:29:56 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,10 @@ static t_bool	handle_32bit_cpu(t_file f, t_fat_64 fat, const char *arg)
 		}
 		fat.mach_o = get_mach_o_file(f.ptr, fat.arch, f.swp);
 		fat.magic = *(int *)fat.mach_o.ptr;
-		ft_printf("\n%s (for architecture %s):\n", arg, cpu_type);
+		if (fat.nfat_arch == 1)
+			ft_printf("%s:\n", arg, cpu_type);
+		else
+			ft_printf("\n%s (for architecture %s):\n", arg, cpu_type);
 		handle_magic(fat.magic, fat.mach_o, arg);
 		fat.arch = (void*)fat.arch + sizeof(*fat.arch);
 		i++;
