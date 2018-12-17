@@ -6,12 +6,12 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/30 14:31:10 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/10 17:00:00 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/17 19:03:11 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
-#include "error.h"
+// #include "error.h"
 
 int				main(int ac, char **av)
 {
