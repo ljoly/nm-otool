@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 18:29:53 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/17 17:13:54 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/17 22:28:04 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@ static void		print_syms32(const t_mach o)
 		if (o.syms[i].type == 'u' || o.syms[i].type == 'U')
 		{
 			ft_printf("%10c %s\n", o.syms[i].type, o.syms[i].name);
+		}
+		else if (o.syms[i].type == 'i' || o.syms[i].type == 'I')
+		{
+			ft_printf("%10c %s (indirect for %s)\n", o.syms[i].type,
+				o.syms[i].name, o.syms[i].name);
 		}
 		else if (o.syms[i].type)
 		{
@@ -42,6 +47,11 @@ static void		print_syms64(const t_mach o)
 		if (o.syms[i].type == 'u' || o.syms[i].type == 'U')
 		{
 			ft_printf("%18c %s\n", o.syms[i].type, o.syms[i].name);
+		}
+		else if (o.syms[i].type == 'i' || o.syms[i].type == 'I')
+		{
+			ft_printf("%18c %s (indirect for %s)\n", o.syms[i].type,
+				o.syms[i].name, o.syms[i].name);
 		}
 		else if (o.syms[i].type)
 		{
