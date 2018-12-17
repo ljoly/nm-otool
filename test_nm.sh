@@ -6,7 +6,6 @@ NC="\033[0m"
 
 if [ -f "nm_fail.txt" ]
     then
-	echo "OUI"
     rm nm_fail.txt
 fi
 for filename in /bin/* /sbin/* /usr/lib/* /usr/bin/* /usr/sbin/*; do
