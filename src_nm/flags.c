@@ -1,43 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   flags.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/30 14:31:10 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/18 19:16:56 by ljoly            ###   ########.fr       */
+/*   Created: 2018/12/18 18:43:33 by ljoly             #+#    #+#             */
+/*   Updated: 2018/12/18 19:17:28 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_nm.h"
 #include "flags.h"
+#include "error.h"
 
-int				main(int ac, char **av)
+static t_bool	is_flag(const char *f)
 {
-	int			fd;
-	int			i;
+	return (ft_strequ(f, "-u") || ft_strequ(f, "-U") || ft_strequ(f, "-p") ||
+		ft_strequ(f, "-j"), ft_strequ(f, "-g"));
+}
 
-	g_exit_status = EXIT_SUCCESS;
-	if (!get_flags(ac, av))
+t_bool			get_flags(int ac, char **av)
+{
+	int				i;
+	static char		tab[5][2] = {"-u", "-U", "-p", "-j", "-g"};
+
+	i = 0;
+	g_flags = 0;
+	while (i < ac && *av[i] == '-')
 	{
-		return (g_exit_status);
-	}
-	if (ac < 2)
-	{
-		handle_arg("a.out", &fd);
-	}
-	else
-	{
-		i = 1;
-		while (i < ac)
+		if (!is_flag(av[i]))
 		{
-			if (ac > 2)
-				ft_printf("\n%s: \n", av[i]);
-			handle_arg(av[i], &fd);
-			close(fd);
-			i++;
+			err_usage(FLAG, av[i]);
+			return (FALSE);
 		}
+
+		i++;
 	}
-	return (g_exit_status);
+	return (TRUE);
 }

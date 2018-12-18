@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/02 14:18:27 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/10 16:59:12 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/18 19:08:02 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,17 @@ static void			err_sys(const t_err err_code, const char *arg)
 
 static void			err_usage(const t_err err_code, const char *arg)
 {
-	if (err_code == DIR)
+	if (err_code == FORMAT)
+	{
+		print_err("the file was not recognized as a valid object file", arg);
+	}
+	else if (err_code == DIR)
 	{
 		print_err("is a directory", arg);
 	}
-	else if (err_code == FORMAT)
+	else if (err_code == FLAG)
 	{
-		print_err("the file was not recognized as a valid object file", arg);
+		print_err("wrong flag", arg);
 	}
 }
 

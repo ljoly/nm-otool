@@ -1,43 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   flags.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/30 14:31:10 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/18 19:16:56 by ljoly            ###   ########.fr       */
+/*   Created: 2018/12/18 14:30:08 by ljoly             #+#    #+#             */
+/*   Updated: 2018/12/18 18:50:59 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_nm.h"
-#include "flags.h"
+#ifndef FLAGS_H
+# define FLAGS_H
 
-int				main(int ac, char **av)
-{
-	int			fd;
-	int			i;
+# include "libft.h"
 
-	g_exit_status = EXIT_SUCCESS;
-	if (!get_flags(ac, av))
-	{
-		return (g_exit_status);
-	}
-	if (ac < 2)
-	{
-		handle_arg("a.out", &fd);
-	}
-	else
-	{
-		i = 1;
-		while (i < ac)
-		{
-			if (ac > 2)
-				ft_printf("\n%s: \n", av[i]);
-			handle_arg(av[i], &fd);
-			close(fd);
-			i++;
-		}
-	}
-	return (g_exit_status);
-}
+# define ONLY_UNDF 0x1
+# define NO_UNDF 0x2
+# define ONLY_NAMES 0x4
+# define NO_SORT 0x8
+# define ONLY_EXTERN 0x10
+
+int			g_flags;
+
+t_bool		get_flags(int ac, char **av);
+
+#endif

@@ -6,7 +6,7 @@
 #    By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/10/30 14:53:21 by ljoly             #+#    #+#              #
-#    Updated: 2018/12/17 19:37:44 by ljoly            ###   ########.fr        #
+#    Updated: 2018/12/18 19:02:00 by ljoly            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ NAME_OTOOL = ft_otool
 SRC_NM = main.c handle_arg.c error.c handle_magic.c handle_64.c get_sections_64.c \
 		get_symbols.c sort.c free_memory.c data_consistency_64.c print.c \
 		handle_fat_32.c swaps.c check_access.c data_consistency_32.c \
-		handle_fat_64.c handle_arch.c handle_32.c get_sections_32.c cpu.c
+		handle_fat_64.c handle_arch.c handle_32.c get_sections_32.c cpu.c \
+		flags.c
 
 SRC_OTOOL = main.c handle_arg.c error.c handle_magic.c handle_64.c get_sections_64.c \
 		free_memory.c data_consistency_64.c print.c handle_fat_32.c swaps.c \
