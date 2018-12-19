@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 12:01:51 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/19 20:55:43 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/19 21:13:02 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ t_bool				handle_syms(t_file f, const char *arg, t_mach *o,
 	free(o->sects);
 	if (o->syms)
 	{
-		if (is_no_sort())
+		if (!is_no_sort())
 			sort_syms(o->syms, o->symtab->nsyms);
 		get_syms == &get_syms_64 ? print_syms(*o, TRUE) : print_syms(*o, FALSE);
 	}
