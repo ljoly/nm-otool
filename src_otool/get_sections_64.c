@@ -6,41 +6,45 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 13:29:29 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/12 17:27:14 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/19 22:55:15 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
-#include "error.h"
 
-static t_sect		g_sections[3] = {
-	{SECT_TEXT, 't'},
-	{SECT_DATA, 'd'},
-	{SECT_BSS, 'b'}};
-
-static t_sect		find_symtype(char *sect_name)
+static t_bool		print_sect_text(t_file f, struct section_64 *sect)
 {
-	unsigned long	i;
-	t_sect			sect;
+	unsigned char	*p;
+	uint64_t		i;
+	int				j;
+	uint32_t		offset;
 
-	i = 0;
-	sect.name = sect_name;
-	sect.symbol = FALSE;
-	while (i < sizeof(g_sections) / sizeof(*g_sections))
+	p = f.ptr + swp32(&sect->offset, f.swp);
+	if (!access_at(f, p + swp64(&sect->size, f.swp)))
 	{
-		if (!ft_strncmp(sect_name, g_sections[i].name,
-			sizeof((struct section_64*)0)->sectname))
-		{
-			sect.symbol = g_sections[i].symbol;
-			return (sect);
-		}
-		i++;
+		return (FALSE);
 	}
-	return (sect);
+	i = 0;
+	offset = sect->offset;
+	ft_putendl("Contents of (__TEXT,__text) section");
+	while (i < sect->size)
+	{
+		ft_printf("%s%.8x\t", "00000001", offset);
+		j = 0;
+		while (j < 16)
+		{
+			ft_printf("%.2x ", p[j]);
+			j++;
+		}
+		ft_putchar('\n');
+		p += 16;
+		offset += 16;
+		i += 16;
+	}
+	return (TRUE);
 }
 
-static void			store_sections(struct segment_command_64 *seg,
-	t_sect *sects, int *s)
+static t_bool		find_sect_text(t_file f, struct segment_command_64 *seg)
 {
 	uint32_t			i;
 	struct section_64	*sect;
@@ -49,37 +53,36 @@ static void			store_sections(struct segment_command_64 *seg,
 	i = 0;
 	while (i < seg->nsects)
 	{
-		sects[*s] = find_symtype(sect->sectname);
+		if (!ft_strncmp(sect->sectname, SECT_TEXT, ft_strlen(sect->sectname)))
+		{
+			return (print_sect_text(f, sect));
+		}
 		sect = (void *)sect + sizeof(*sect);
 		i++;
-		*s += 1;
 	}
+	return (FALSE);
 }
 
 t_bool				get_sections_64(t_file f, const char *arg, t_mach *o)
 {
 	uint32_t					i;
 	struct segment_command_64	*seg;
-	int							s;
 
-	if (!(o->sects = (t_sect*)ft_memalloc(sizeof(t_sect) * o->nsects)))
-	{
-		err_cmd(MALLOC, arg);
-		return (FALSE);
-	}
+	(void)arg;
 	o->lc = (void *)f.ptr + sizeof(struct mach_header_64);
 	i = 0;
-	s = 0;
 	while (i < o->header->ncmds)
 	{
 		if (o->lc->cmd == LC_SEGMENT_64)
 		{
 			seg = (struct segment_command_64 *)o->lc;
-			if (seg->nsects > 0)
-				store_sections(seg, o->sects, &s);
+			if (seg->nsects > 0 && !ft_strncmp(seg->segname, SEG_TEXT, ft_strlen(seg->segname)))
+			{
+				return (find_sect_text(f, seg));
+			}
 		}
 		o->lc = (void *)o->lc + o->lc->cmdsize;
 		i++;
 	}
-	return (TRUE);
+	return (FALSE);
 }

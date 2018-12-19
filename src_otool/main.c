@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/17 18:37:38 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/17 19:12:18 by ljoly            ###   ########.fr       */
+/*   Created: 2018/10/30 14:31:10 by ljoly             #+#    #+#             */
+/*   Updated: 2018/12/19 21:37:20 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@ int			main(int ac, char **av)
 {
 	int		i;
 	int		fd;
+	int		exit_status;
 
-	g_exit_status = EXIT_SUCCESS;
+
+	exit_status = EXIT_SUCCESS;
 	if (ac < 2)
 	{
 		ft_putendl_fd("Error: at least one file must be specified", STDERR);
@@ -28,10 +30,11 @@ int			main(int ac, char **av)
 		i = 1;
 		while (i < ac)
 		{
-			handle_arg(av[i], &fd);
+			if (!handle_arg(av[i], &fd))
+				exit_status = EXIT_FAILURE;
 			close(fd);
 			i++;
 		}
 	}
-	return (g_exit_status);
+	return (exit_status);
 }

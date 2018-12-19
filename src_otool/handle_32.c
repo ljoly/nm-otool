@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/11 18:02:32 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/18 11:13:54 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/17 16:41:34 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ t_bool			handle_32(t_file f, const char *arg)
 	if (sizeof_cmds != swp32(&o.header->sizeofcmds, f.swp) ||
 		!get_sections_32(f, arg, &o))
 		return (FALSE);
-	return (TRUE);
-	// o.lc = f.ptr + sizeof(struct mach_header);
-	// return (handle_syms(f, arg, &o, &get_syms_32));
+	o.lc = f.ptr + sizeof(struct mach_header);
+	return (handle_syms(f, arg, &o, &get_syms_32));
 }

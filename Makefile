@@ -6,7 +6,7 @@
 #    By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/10/30 14:53:21 by ljoly             #+#    #+#              #
-#    Updated: 2018/12/19 19:21:39 by ljoly            ###   ########.fr        #
+#    Updated: 2018/12/19 22:16:20 by ljoly            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,9 +20,9 @@ SRC_NM = main.c handle_arg.c error.c handle_magic.c handle_64.c get_sections_64.
 		flags_parse.c flags_is.c
 
 SRC_OTOOL = main.c handle_arg.c error.c handle_magic.c handle_64.c get_sections_64.c \
-		free_memory.c data_consistency_64.c print.c handle_fat_32.c swaps.c \
+		data_consistency_64.c handle_fat_32.c swaps.c \
 		check_access.c data_consistency_32.c handle_fat_64.c \
-		handle_arch.c handle_32.c get_sections_32.c cpu.c
+		handle_arch.c get_sections_32.c cpu.c
 
 SRC_NM_PATH = ./src_nm/
 SRC_OTOOL_PATH = ./src_otool/
@@ -54,21 +54,21 @@ obj_nm:
 	@printf "\n\x1B[38;5;208mCompiling $(NAME_NM)...\n\x1b[37m"
 	@mkdir -p $(OBJ_NM_PATH)
 
-# $(NAME_OTOOL): obj_otool $(OBJ_OTOOL)
-# 	gcc $(FLAGS) -o $(NAME_OTOOL) $(OBJ_OTOOL) -I $(HEADER) -L $(LIBFT) -lft
-# 	@printf "\n$(GREEN)[✓]$(NC)\x1B[32mExecutable $(NAME_OTOOL) ready !\x1B[37m\n"
+$(NAME_OTOOL): obj_otool $(OBJ_OTOOL)
+	gcc $(FLAGS) -o $(NAME_OTOOL) $(OBJ_OTOOL) -I $(HEADER) -L $(LIBFT) -lft
+	@printf "\n$(GREEN)[✓]$(NC)\x1B[32mExecutable $(NAME_OTOOL) ready !\x1B[37m\n"
 
-# obj_otool:
-# 	@printf "\n\x1B[38;5;208mCompiling $(NAME_OTOOL)...\n\x1b[37m"
-# 	@mkdir -p $(OBJ_OTOOL_PATH)
+obj_otool:
+	@printf "\n\x1B[38;5;208mCompiling $(NAME_OTOOL)...\n\x1b[37m"
+	@mkdir -p $(OBJ_OTOOL_PATH)
 
 $(OBJ_NM_PATH)%.o: $(SRC_NM_PATH)%.c
 	gcc $(FLAGS) -I $(LIBFT) -I $(HEADER) -I $(LIBFT_HEADER) -o $@ -c $<
 	@printf "\e[38;5;208m▒\e[0m"
 
-# $(OBJ_OTOOL_PATH)%.o: $(SRC_OTOOL_PATH)%.c
-# 	gcc $(FLAGS) -I $(LIBFT) -I $(HEADER) -I $(LIBFT_HEADER) -o $@ -c $<
-# 	@printf "\e[38;5;208m▒\e[0m"
+$(OBJ_OTOOL_PATH)%.o: $(SRC_OTOOL_PATH)%.c
+	gcc $(FLAGS) -I $(LIBFT) -I $(HEADER) -I $(LIBFT_HEADER) -o $@ -c $<
+	@printf "\e[38;5;208m▒\e[0m"
 
 clean:
 	# @make -C $(LIBFT) clean
@@ -78,8 +78,8 @@ clean:
 
 fclean: clean
 	# @make -C $(LIBFT) fclean
-	@rm -f $(NAME_NM)
-	# @rm -f $(NAME_OTOOL)
+	# @rm -f $(NAME_NM)
+	@rm -f $(NAME_OTOOL)
 	@printf "$(RED)[-]$(NC)Executable $(NAME_NM) deleted\n"
 	@printf "$(RED)[-]$(NC)Executable $(NAME_OTOOL) deleted\n"
 
