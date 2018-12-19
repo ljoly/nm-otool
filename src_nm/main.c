@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/30 14:31:10 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/18 19:16:56 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/19 19:01:47 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,29 @@
 
 int				main(int ac, char **av)
 {
-	int			fd;
-	int			i;
+	int		n_arg;
+	int		fd;
+	int		i;
 
 	g_exit_status = EXIT_SUCCESS;
-	if (!get_flags(ac, av))
-	{
+	g_flags = 0;
+	if (!handle_flags(ac, av, &n_arg))
 		return (g_exit_status);
+	i = 1;
+	while (i < ac)
+	{
+		if (*av[i] != '-')
+		{
+			if (n_arg > 1)
+				ft_printf("\n%s: \n", av[i]);
+			handle_arg(av[i], &fd);
+		}
+		i++;
 	}
-	if (ac < 2)
+	if (!n_arg)
 	{
 		handle_arg("a.out", &fd);
 	}
-	else
-	{
-		i = 1;
-		while (i < ac)
-		{
-			if (ac > 2)
-				ft_printf("\n%s: \n", av[i]);
-			handle_arg(av[i], &fd);
-			close(fd);
-			i++;
-		}
-	}
+	close(fd);
 	return (g_exit_status);
 }

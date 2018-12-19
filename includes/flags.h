@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/18 14:30:08 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/18 18:50:59 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/19 19:36:27 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,20 @@
 # define NO_SORT 0x8
 # define ONLY_EXTERN 0x10
 
-int			g_flags;
+int				g_flags;
 
-t_bool		get_flags(int ac, char **av);
+typedef struct	s_flag
+{
+	char		*name;
+	int			code;
+}				t_flag;
+
+t_bool			handle_flags(int ac, char **av, int *n_arg);
+
+t_bool			is_only_undf(void);
+t_bool			is_no_undf(void);
+t_bool			is_only_names(void);
+t_bool			is_no_sort(void);
+t_bool			is_only_extern(void);
 
 #endif

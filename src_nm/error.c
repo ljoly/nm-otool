@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/02 14:18:27 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/18 19:08:02 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/19 18:02:18 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,20 @@ static void			err_usage(const t_err err_code, const char *arg)
 	{
 		print_err("is a directory", arg);
 	}
-	else if (err_code == FLAG)
+	else if (err_code == NOT_A_FLAG)
 	{
-		print_err("wrong flag", arg);
+		print_err("bad option", arg);
+	}
+	else if (err_code == FLAG_DUP)
+	{
+		print_err("option may only occur once", arg);
 	}
 }
 
 void				err_cmd(const t_err err, const char *arg)
 {
 	g_exit_status = EXIT_FAILURE;
-	if (err == DIR || err == FORMAT)
+	if (err == DIR || err == FORMAT || err == NOT_A_FLAG || err == FLAG_DUP)
 	{
 		err_usage(err, arg);
 	}

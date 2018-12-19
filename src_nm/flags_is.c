@@ -1,32 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.h                                            :+:      :+:    :+:   */
+/*   flags_is.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/02 14:22:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/19 17:57:54 by ljoly            ###   ########.fr       */
+/*   Created: 2018/12/19 19:14:11 by ljoly             #+#    #+#             */
+/*   Updated: 2018/12/19 19:36:09 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ERROR_H
-# define ERROR_H
+#include "flags.h"
 
-typedef enum	e_err
+t_bool		is_only_undf(void)
 {
-	NO_ERR,
-	DIR,
-	FORMAT,
-	OPEN,
-	FSTAT,
-	MMAP,
-	MUNMAP,
-	MALLOC,
-	FLAG_DUP,
-	NOT_A_FLAG
-}				t_err;
+	return (g_flags & 1);
+}
 
-void		err_cmd(const t_err err, const char *arg);
+t_bool		is_no_undf(void)
+{
+	return ((g_flags >> 1) & 1);
+}
 
-#endif
+t_bool		is_only_names(void)
+{
+	return ((g_flags >> 2) & 1);
+}
+
+t_bool		is_no_sort(void)
+{
+	return ((g_flags >> 3) & 1);
+}
+
+t_bool		is_only_extern(void)
+{
+	return ((g_flags >> 4) & 1);
+}

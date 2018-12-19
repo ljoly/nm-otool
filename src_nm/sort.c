@@ -6,11 +6,12 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 12:12:13 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/17 17:23:35 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/19 18:48:18 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
+#include "flags.h"
 
 static void		swap_syms(t_sym *sym1, t_sym *sym2)
 {
@@ -33,6 +34,8 @@ void			sort_syms(t_sym *syms, uint32_t size)
 	uint32_t	i;
 	int			cmp;
 
+	if ((g_flags >> 3) & 1)
+		return ;
 	sorted = FALSE;
 	while (!sorted)
 	{
