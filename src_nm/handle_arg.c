@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:58:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/11 18:05:19 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/19 21:10:53 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static t_err	handle_file(const char *arg, int *fd, t_file *f)
 	return (NO_ERR);
 }
 
-void			handle_arg(const char *arg, int *fd)
+t_bool			handle_arg(const char *arg, int *fd)
 {
 	int			magic;
 	t_file		f;
@@ -46,18 +46,21 @@ void			handle_arg(const char *arg, int *fd)
 	if ((err = handle_file(arg, fd, &f)) != NO_ERR)
 	{
 		err_cmd(err, arg);
-		return ;
+		return (FALSE);
 	}
 	if ((f.ptr = mmap(0, f.size, PROT_READ | PROT_WRITE, MAP_PRIVATE, *fd, 0))
 		== MAP_FAILED)
 	{
 		err_cmd(MMAP, arg);
-		return ;
+		return (FALSE);
 	}
 	magic = *(int *)f.ptr;
-	handle_magic(magic, f, arg);
+	if (!handle_magic(magic, f, arg))
+		return (FALSE);
 	if (munmap(f.ptr, f.size) < 0)
 	{
 		err_cmd(MUNMAP, arg);
+		return (FALSE);
 	}
+	return (TRUE);
 }

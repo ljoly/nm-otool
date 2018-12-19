@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/30 14:31:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/11 20:42:08 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/19 21:13:44 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,6 @@
 # include "macho.h"
 
 /*
-** return value
-*/
-
-int				g_exit_status;
-
-/*
 ** file data
 */
 
@@ -43,7 +37,7 @@ typedef struct	s_file
 
 t_bool			access_at(t_file f, const void *ptr);
 
-void			handle_arg(const char *arg, int *fd);
+t_bool			handle_arg(const char *arg, int *fd);
 
 t_bool			handle_64(t_file f, const char *arg);
 t_bool			handle_32(t_file f, const char *arg);

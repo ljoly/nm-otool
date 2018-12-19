@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:57:52 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/12 18:33:48 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/19 21:14:08 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static t_bool		handle_ar_magic(int *magic, t_file f)
 	return (TRUE);
 }
 
-void				handle_magic(int magic, t_file f, const char *arg)
+t_bool				handle_magic(int magic, t_file f, const char *arg)
 {
 	t_bool			valid_file;
 	unsigned long	i;
@@ -48,7 +48,7 @@ void				handle_magic(int magic, t_file f, const char *arg)
 	if (!handle_ar_magic(&magic, f))
 	{
 		err_cmd(FORMAT, arg);
-		return ;
+		return (FALSE);
 	}
 	i = 0;
 	while (i < sizeof(g_nums) / sizeof(*g_nums))
@@ -63,7 +63,6 @@ void				handle_magic(int magic, t_file f, const char *arg)
 		i++;
 	}
 	if (!valid_file)
-	{
 		err_cmd(FORMAT, arg);
-	}
+	return (valid_file);
 }
