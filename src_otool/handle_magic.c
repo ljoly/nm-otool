@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:57:52 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/20 16:10:37 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/20 17:14:39 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void			print_arg(int magic, const char *arg)
 	if (magic == g_nums[5].num || magic == g_nums[7].num)
 		return ;
 	else if (magic == AR_MAG)
-		ft_printf("Archive : %s\n", arg);		
+		ft_printf("Archive : %s\n", arg);
 	else
 		ft_printf("%s:\n", arg);
 }
@@ -61,8 +61,8 @@ t_bool				handle_magic_otool(int magic, t_file f, const char *arg,
 		err_cmd(FORMAT, arg);
 		return (FALSE);
 	}
-	i = 0;
-	while (i < sizeof(g_nums) / sizeof(*g_nums))
+	i = -1;
+	while (++i < sizeof(g_nums) / sizeof(*g_nums))
 	{
 		if (magic == g_nums[i].num)
 		{
@@ -73,7 +73,6 @@ t_bool				handle_magic_otool(int magic, t_file f, const char *arg,
 				valid_file = TRUE;
 			break ;
 		}
-		i++;
 	}
 	if (!valid_file)
 		err_cmd(FORMAT, arg);

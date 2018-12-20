@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 19:31:58 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/20 16:25:27 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/20 17:13:10 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ t_bool			handle_fat_32(t_file f, const char *arg)
 	init_data(f, &fat);
 	if (!access_at(f, f.ptr + sizeof(*fat.header)))
 		return (FALSE);
-	i = 0;
-	while (i < fat.nfat_arch)
+	i = -1;
+	while (++i < fat.nfat_arch)
 	{
 		if (!access_at(f, (void*)fat.arch + sizeof(*fat.arch)))
 			return (FALSE);
@@ -93,7 +93,6 @@ t_bool			handle_fat_32(t_file f, const char *arg)
 			break ;
 		}
 		fat.arch = (void*)fat.arch + sizeof(*fat.arch);
-		i++;
 	}
 	return (fat.cpu_type_found ? TRUE : handle_cpu_type(f, fat, arg));
 }
