@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/30 14:31:10 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/19 21:37:20 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/20 15:33:27 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int			main(int ac, char **av)
 	int		i;
 	int		fd;
 	int		exit_status;
-
 
 	exit_status = EXIT_SUCCESS;
 	if (ac < 2)
