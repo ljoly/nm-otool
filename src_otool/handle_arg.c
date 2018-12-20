@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:58:25 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/19 21:10:53 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/20 15:58:02 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_bool			handle_arg(const char *arg, int *fd)
 		return (FALSE);
 	}
 	magic = *(int *)f.ptr;
-	if (!handle_magic(magic, f, arg))
+	if (!handle_magic_otool(magic, f, arg, TRUE))
 		return (FALSE);
 	if (munmap(f.ptr, f.size) < 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:57:52 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/20 11:36:33 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/20 16:10:37 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,16 @@ static t_magic		g_nums[9] = {
 	{AR_MAG, NOSWAP, handle_arch},
 };
 
+static void			print_arg(int magic, const char *arg)
+{
+	if (magic == g_nums[5].num || magic == g_nums[7].num)
+		return ;
+	else if (magic == AR_MAG)
+		ft_printf("Archive : %s\n", arg);		
+	else
+		ft_printf("%s:\n", arg);
+}
+
 static t_bool		handle_ar_magic(int *magic, t_file f)
 {
 	if (!access_at(f, f.ptr + SARMAG))
@@ -39,7 +49,8 @@ static t_bool		handle_ar_magic(int *magic, t_file f)
 	return (TRUE);
 }
 
-t_bool				handle_magic(int magic, t_file f, const char *arg)
+t_bool				handle_magic_otool(int magic, t_file f, const char *arg,
+	t_bool print)
 {
 	t_bool			valid_file;
 	unsigned long	i;
@@ -55,6 +66,8 @@ t_bool				handle_magic(int magic, t_file f, const char *arg)
 	{
 		if (magic == g_nums[i].num)
 		{
+			if (print)
+				print_arg(magic, arg);
 			f.swp = g_nums[i].swp;
 			if (g_nums[i].cmd(f, arg))
 				valid_file = TRUE;

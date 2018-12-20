@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/11 19:57:48 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/20 15:15:02 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/20 16:31:17 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ static t_bool		print_sect_text(t_file f, struct section *sect)
 	unsigned char	*p;
 	uint32_t		i;
 	uint32_t		offset;
-	uint32_t		align;
 	uint32_t		magic;
 
 	magic = *(uint32_t*)f.ptr;
@@ -57,7 +56,6 @@ static t_bool		print_sect_text(t_file f, struct section *sect)
 		return (FALSE);
 	i = 0;
 	offset = swp32(&sect->addr, f.swp) - 16;
-	align = 16 / (swp32(&sect->align, f.swp) * sect->align);
 	ft_putstr("Contents of (__TEXT,__text) section");
 	while (i < sect->size)
 	{
