@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 13:29:29 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/20 11:59:11 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/20 15:17:42 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,28 +16,27 @@ static t_bool		print_sect_text(t_file f, struct section_64 *sect)
 {
 	unsigned char	*p;
 	uint64_t		i;
-	int				j;
 	uint64_t		offset;
+	uint32_t		align;
 
 	p = f.ptr + swp32(&sect->offset, f.swp);
 	if (!access_at(f, p + swp64(&sect->size, f.swp)))
 		return (FALSE);
 	i = 0;
-	offset = sect->addr;
-	ft_putendl("Contents of (__TEXT,__text) section");
+	offset = swp64(&sect->addr, f.swp);
+	align = 16 / (swp32(&sect->align, f.swp) * sect->align);
+	ft_putstr("Contents of (__TEXT,__text) section");
 	while (i < sect->size)
 	{
-		ft_printf("%.16x\t", offset);
-		j = -1;
-		while (++j < 16)
+		if (i % 16 == 0)
 		{
-			ft_printf("%.2x ", p[j]);
+			ft_printf("\n%.16x\t", offset);
+			offset += 16;
 		}
-		ft_putchar('\n');
-		p += 16;
-		offset += 16;
-		i += 16;
+		ft_printf("%.2x ", p[i]);
+		i++;
 	}
+	ft_putchar('\n');
 	return (TRUE);
 }
 

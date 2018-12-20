@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 15:04:04 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/17 17:10:23 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/20 15:15:44 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void		print_name_o(t_fat_64 fat, const char *arg, char *cpu_type)
 	if (fat.nfat_arch == 1)
 		ft_printf("%s:\n", arg, cpu_type);
 	else
-		ft_printf("\n%s (for architecture %s):\n", arg, cpu_type);
+		ft_printf("%s (architecture %s):\n", arg, cpu_type);
 }
 
 static t_file	get_mach_o_file(void *file, struct fat_arch_64 *arch,
