@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/02 14:18:27 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/19 21:26:22 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/20 14:26:29 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,6 @@ static void			err_sys(const t_err err_code, const char *arg)
 	else if (err_code == MUNMAP)
 	{
 		print_err("munmap", arg);
-	}
-	else if (err_code == MALLOC)
-	{
-		print_err("malloc", arg);
 	}
 }
 
