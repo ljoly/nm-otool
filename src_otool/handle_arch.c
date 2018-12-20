@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 16:30:39 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/17 16:42:06 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/20 11:14:24 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,13 @@ t_bool					handle_arch(t_file f, const char *arg)
 
 	if (!(ar = init_data(f, &ar_name_size, &mach_o)))
 		return (FALSE);
+	if (access_at(f, mach_o.ptr))
+		ft_printf("Archive : %s\n", arg);
 	while (access_at(f, mach_o.ptr))
 	{
 		magic = *(uint32_t*)mach_o.ptr;
 		mach_o.size = ft_atoi(ar->ar_size);
-		ft_printf("\n%s(%s):\n", arg, (char*)ar + sizeof(struct ar_hdr));
+		ft_printf("%s(%s):\n", arg, (char*)ar + sizeof(struct ar_hdr));
 		handle_magic(magic, mach_o, arg);
 		ar = (void*)ar + sizeof(struct ar_hdr) + ft_atoi(ar->ar_size);
 		if (!access_at(f, (void*)ar + sizeof(struct ar_hdr)))
