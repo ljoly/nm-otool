@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 13:29:29 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/20 11:23:22 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/20 11:59:11 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,17 @@ static t_bool		print_sect_text(t_file f, struct section_64 *sect)
 	unsigned char	*p;
 	uint64_t		i;
 	int				j;
-	uint32_t		offset;
+	uint64_t		offset;
 
 	p = f.ptr + swp32(&sect->offset, f.swp);
 	if (!access_at(f, p + swp64(&sect->size, f.swp)))
 		return (FALSE);
 	i = 0;
-	offset = sect->offset;
+	offset = sect->addr;
 	ft_putendl("Contents of (__TEXT,__text) section");
 	while (i < sect->size)
 	{
-		ft_printf("%s%.8x\t", "00000001", offset);
+		ft_printf("%.16x\t", offset);
 		j = -1;
 		while (++j < 16)
 		{
