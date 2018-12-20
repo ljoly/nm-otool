@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 13:29:29 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/19 22:55:15 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/20 11:23:22 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,17 @@ static t_bool		print_sect_text(t_file f, struct section_64 *sect)
 
 	p = f.ptr + swp32(&sect->offset, f.swp);
 	if (!access_at(f, p + swp64(&sect->size, f.swp)))
-	{
 		return (FALSE);
-	}
 	i = 0;
 	offset = sect->offset;
 	ft_putendl("Contents of (__TEXT,__text) section");
 	while (i < sect->size)
 	{
 		ft_printf("%s%.8x\t", "00000001", offset);
-		j = 0;
-		while (j < 16)
+		j = -1;
+		while (++j < 16)
 		{
 			ft_printf("%.2x ", p[j]);
-			j++;
 		}
 		ft_putchar('\n');
 		p += 16;
@@ -76,7 +73,8 @@ t_bool				get_sections_64(t_file f, const char *arg, t_mach *o)
 		if (o->lc->cmd == LC_SEGMENT_64)
 		{
 			seg = (struct segment_command_64 *)o->lc;
-			if (seg->nsects > 0 && !ft_strncmp(seg->segname, SEG_TEXT, ft_strlen(seg->segname)))
+			if (seg->nsects > 0 &&
+				!ft_strncmp(seg->segname, SEG_TEXT, ft_strlen(seg->segname)))
 			{
 				return (find_sect_text(f, seg));
 			}
