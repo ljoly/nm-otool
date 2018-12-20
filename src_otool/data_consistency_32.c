@@ -6,12 +6,11 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 12:13:01 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/17 16:40:19 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/20 15:28:36 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
-#include "handle_memory.h"
 
 /*
 ** checking 32-bit arch offsets:

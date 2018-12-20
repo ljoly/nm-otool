@@ -6,13 +6,12 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 15:04:04 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/20 15:15:44 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/20 15:28:20 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 #include "fat.h"
-#include "handle_memory.h"
 #include "handle_magic.h"
 
 static void		print_name_o(t_fat_64 fat, const char *arg, char *cpu_type)
