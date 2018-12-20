@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:57:52 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/19 22:16:38 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/20 11:36:33 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 static t_magic		g_nums[9] = {
 	{MH_MAGIC_64, NOSWAP, handle_64},
 	{MH_CIGAM_64, SWAP, handle_64},
-	// {MH_MAGIC, NOSWAP, handle_32},
-	// {MH_CIGAM, SWAP, handle_32},
+	{MH_MAGIC, NOSWAP, handle_32},
+	{MH_CIGAM, SWAP, handle_32},
 	{FAT_MAGIC, NOSWAP, handle_fat_32},
 	{FAT_CIGAM, SWAP, handle_fat_32},
 	{FAT_MAGIC_64, NOSWAP, handle_fat_64},

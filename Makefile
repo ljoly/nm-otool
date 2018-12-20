@@ -6,7 +6,7 @@
 #    By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/10/30 14:53:21 by ljoly             #+#    #+#              #
-#    Updated: 2018/12/19 22:16:20 by ljoly            ###   ########.fr        #
+#    Updated: 2018/12/20 11:36:14 by ljoly            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ SRC_NM = main.c handle_arg.c error.c handle_magic.c handle_64.c get_sections_64.
 SRC_OTOOL = main.c handle_arg.c error.c handle_magic.c handle_64.c get_sections_64.c \
 		data_consistency_64.c handle_fat_32.c swaps.c \
 		check_access.c data_consistency_32.c handle_fat_64.c \
-		handle_arch.c get_sections_32.c cpu.c
+		handle_arch.c handle_32.c get_sections_32.c cpu.c
 
 SRC_NM_PATH = ./src_nm/
 SRC_OTOOL_PATH = ./src_otool/
