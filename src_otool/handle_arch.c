@@ -6,13 +6,23 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 16:30:39 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/20 16:34:24 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/26 19:16:03 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 #include "handle_magic.h"
 #include <ar.h>
+
+static uint32_t			get_ar_name_size(struct ar_hdr *ar)
+{
+	uint32_t			size;
+
+	size = 0;
+	if (!ft_strncmp(ar->ar_name, AR_EFMT1, ft_strlen(AR_EFMT1)))
+		size = ft_atoi(ar->ar_name + ft_strlen(AR_EFMT1));
+	return (size);
+}
 
 static void				*get_first_o(t_file f, struct ar_hdr **ar,
 	uint32_t *ar_name_size)
@@ -35,7 +45,7 @@ static void				*get_first_o(t_file f, struct ar_hdr **ar,
 	*ar = f.ptr + offset;
 	if (!access_at(f, (void*)*ar + sizeof(struct ar_hdr)))
 		return (NULL);
-	*ar_name_size = ft_atoi(ft_strchr((*ar)->ar_name, '/') + 1);
+	*ar_name_size = get_ar_name_size(*ar);
 	return ((void*)*ar + sizeof(struct ar_hdr)
 		+ *ar_name_size);
 }
@@ -48,7 +58,7 @@ static struct ar_hdr	*init_data(t_file f, uint32_t *ar_name_size,
 	ar = f.ptr + SARMAG;
 	if (!access_at(f, (void*)ar + sizeof(struct ar_hdr)))
 		return (NULL);
-	*ar_name_size = ft_atoi(ft_strchr(ar->ar_name, '/') + 1);
+	*ar_name_size = get_ar_name_size(ar);
 	if (!(mach_o->ptr = get_first_o(f, &ar, ar_name_size)))
 		return (NULL);
 	return (ar);
@@ -67,14 +77,15 @@ t_bool					handle_arch(t_file f, const char *arg)
 	{
 		magic = *(uint32_t*)mach_o.ptr;
 		mach_o.size = ft_atoi(ar->ar_size);
-		ft_printf("%s(%s):\n", arg, (char*)ar + sizeof(struct ar_hdr));
+		ar_name_size ? ft_printf("%s(%s):\n", arg, (char*)ar + sizeof(struct ar_hdr)) :
+			ft_printf("%s(%s):\n", arg, ar->ar_name);
 		handle_magic_otool(magic, mach_o, arg, FALSE);
 		ar = (void*)ar + sizeof(struct ar_hdr) + ft_atoi(ar->ar_size);
 		if (!access_at(f, (void*)ar + sizeof(struct ar_hdr)))
 		{
 			break ;
 		}
-		ar_name_size = ft_atoi(ft_strchr(ar->ar_name, '/') + 1);
+		ar_name_size = get_ar_name_size(ar);
 		mach_o.ptr = (void*)ar + sizeof(struct ar_hdr) + ar_name_size;
 	}
 	return (TRUE);
