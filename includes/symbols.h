@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/14 15:35:50 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/17 17:37:16 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/29 19:04:33 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,13 @@
 
 # include <stdint.h>
 
-typedef struct	s_sym
+typedef struct		s_sym
 {
-	uint64_t	value;
-	uint8_t		type;
-	char		*name;
-}				t_sym;
+	uint64_t		value;
+	uint8_t			type;
+	char			*name;
+	struct s_sym	*prev;
+	struct s_sym	*next;
+}					t_sym;
 
 #endif

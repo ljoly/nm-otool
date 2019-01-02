@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 18:29:53 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/19 20:33:04 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/31 12:57:43 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,26 +43,49 @@ static void		print_syms32(const t_mach o)
 static void		print_syms64(const t_mach o)
 {
 	uint32_t	i;
+	t_sym		*syms;
 
+	syms = o.syms;
 	i = 0;
-	while (i < o.symtab->nsyms)
+	// while (i < o.symtab->nsyms)
+	ft_printf("nsyms = %u\n", o.symtab->nsyms);
+	while (syms)
 	{
-		if (o.syms[i].type == 'u' && !is_no_undf() && !is_only_extern())
-			ft_printf("%s\n", o.syms[i].name);
-		else if (o.syms[i].type == 'U' && !is_no_undf())
+		// ft_putnbr(i);
+		// ft_putchar('\n');
+		if (syms->type == 'u' && !is_no_undf() && !is_only_extern())
+			ft_printf("%s\n", syms->name);
+		else if (syms->type == 'U' && !is_no_undf())
 			(is_only_names() || is_only_undf()) ?
-				ft_printf("%s\n", o.syms[i].name) :
-					ft_printf("%18c %s\n", o.syms[i].type, o.syms[i].name);
-		else if (o.syms[i].type != 'U' && ft_isupper(o.syms[i].type)
+				ft_printf("%s\n", syms->name) :
+					ft_printf("%18c %s\n", syms->type, syms->name);
+		else if (syms->type != 'U' && ft_isupper(syms->type)
 			&& is_only_extern() && !is_only_undf())
-			is_only_names() ? ft_printf("%s\n", o.syms[i].name) :
-				ft_printf("%.16llx %c %s\n", o.syms[i].value,
-					o.syms[i].type, o.syms[i].name);
-		else if (o.syms[i].type != 'U' && o.syms[i].type &&
+			is_only_names() ? ft_printf("%s\n", syms->name) :
+				ft_printf("%.16llx %c %s\n", syms->value,
+					syms->type, syms->name);
+		else if (syms->type != 'U' && syms->type &&
 			!is_only_extern() && !is_only_undf())
-			is_only_names() ? ft_printf("%s\n", o.syms[i].name) :
-				ft_printf("%.16llx %c %s\n", o.syms[i].value, o.syms[i].type,
-					o.syms[i].name);
+			is_only_names() ? ft_printf("%s\n", syms->name) :
+				ft_printf("%.16llx %c %s\n", syms->value, syms->type,
+					syms->name);
+		syms = syms->next;
+		// if (o.syms[i].type == 'u' && !is_no_undf() && !is_only_extern())
+		// 	ft_printf("%s\n", o.syms[i].name);
+		// else if (o.syms[i].type == 'U' && !is_no_undf())
+		// 	(is_only_names() || is_only_undf()) ?
+		// 		ft_printf("%s\n", o.syms[i].name) :
+		// 			ft_printf("%18c %s\n", o.syms[i].type, o.syms[i].name);
+		// else if (o.syms[i].type != 'U' && ft_isupper(o.syms[i].type)
+		// 	&& is_only_extern() && !is_only_undf())
+		// 	is_only_names() ? ft_printf("%s\n", o.syms[i].name) :
+		// 		ft_printf("%.16llx %c %s\n", o.syms[i].value,
+		// 			o.syms[i].type, o.syms[i].name);
+		// else if (o.syms[i].type != 'U' && o.syms[i].type &&
+		// 	!is_only_extern() && !is_only_undf())
+		// 	is_only_names() ? ft_printf("%s\n", o.syms[i].name) :
+		// 		ft_printf("%.16llx %c %s\n", o.syms[i].value, o.syms[i].type,
+		// 			o.syms[i].name);
 		i++;
 	}
 }

@@ -6,7 +6,7 @@
 #    By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/10/30 14:53:21 by ljoly             #+#    #+#              #
-#    Updated: 2018/12/20 17:03:16 by ljoly            ###   ########.fr        #
+#    Updated: 2018/12/31 11:52:34 by ljoly            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,11 +46,11 @@ NC=\033[0m
 all: $(NAME_NM) $(NAME_OTOOL)
 
 $(NAME_NM): obj_nm $(OBJ_NM)
-	gcc $(FLAGS) -o $(NAME_NM) $(OBJ_NM) -I $(HEADER) -L $(LIBFT) -lft
+	gcc -fsanitize=address $(FLAGS) -o $(NAME_NM) $(OBJ_NM) -I $(HEADER) -L $(LIBFT) -lft
 	@printf "\n$(GREEN)[✓]$(NC)\x1B[32mExecutable $(NAME_NM) ready !\x1B[37m\n"
 
 obj_nm:
-	@make -C $(LIBFT)
+	# @make -C $(LIBFT)
 	@printf "\n\x1B[38;5;208mCompiling $(NAME_NM)...\n\x1b[37m"
 	@mkdir -p $(OBJ_NM_PATH)
 
@@ -71,13 +71,13 @@ $(OBJ_OTOOL_PATH)%.o: $(SRC_OTOOL_PATH)%.c
 	@printf "\e[38;5;208m▒\e[0m"
 
 clean:
-	@make -C $(LIBFT) clean
+	# @make -C $(LIBFT) clean
 	@rm -rf $(OBJ_NM_PATH)
 	@rm -rf $(OBJ_OTOOL_PATH)
 	@printf "$(RED)[-]$(NC)Obj files deleted\n"
 
 fclean: clean
-	@make -C $(LIBFT) fclean
+	# @make -C $(LIBFT) fclean
 	@rm -f $(NAME_NM)
 	@rm -f $(NAME_OTOOL)
 	@printf "$(RED)[-]$(NC)Executable $(NAME_NM) deleted\n"

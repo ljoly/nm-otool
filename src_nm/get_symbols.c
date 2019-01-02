@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 12:01:51 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/19 21:13:02 by ljoly            ###   ########.fr       */
+/*   Updated: 2018/12/31 14:02:25 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,37 @@ t_bool				get_syms_64(t_file f, t_mach *o)
 
 	table = f.ptr + o->symtab->symoff;
 	strtable = f.ptr + o->symtab->stroff;
-	i = 0;
+	if (o->symtab->nsyms)
+	{
+		o->syms[0].type = get_type(table[0].n_type, table[0].n_sect,
+			swp64(&table[0].n_value, f.swp), o->sects);
+		o->syms[0].value = table[0].n_value;
+		o->syms[0].name = strtable + table[0].n_un.n_strx;
+		o->syms[0].prev = NULL;
+		o->syms[0].next = NULL;		
+	}
+	i = 1;
 	while (i < o->symtab->nsyms)
 	{
 		o->syms[i].type = get_type(table[i].n_type, table[i].n_sect,
 			swp64(&table[i].n_value, f.swp), o->sects);
 		o->syms[i].value = table[i].n_value;
 		o->syms[i].name = strtable + table[i].n_un.n_strx;
+		o->syms[i].prev = &o->syms[i - 1];
+		o->syms[i - 1].next = &o->syms[i];
+		o->syms[i].next = NULL;
 		i++;
 	}
+	// ft_putnbr(i);
+	// ft_putchar('\n');
+
+	// o->syms[i].type = get_type(table[i].n_type, table[i].n_sect,
+	// swp64(&table[i].n_value, f.swp), o->sects);
+	// o->syms[i].value = table[i].n_value;
+	// o->syms[i].name = strtable + table[i].n_un.n_strx;
+	// o->syms[i].prev = &o->syms[i - 1];
+	// o->syms[i - 1].next = &o->syms[i];
+	// o->syms[i].next = NULL;
 	return (TRUE);
 }
 
