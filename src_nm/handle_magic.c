@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:57:52 by ljoly             #+#    #+#             */
-/*   Updated: 2018/12/19 21:14:08 by ljoly            ###   ########.fr       */
+/*   Updated: 2019/01/03 15:31:56 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@ static t_magic		g_nums[9] = {
 	{AR_MAG, NOSWAP, handle_arch},
 };
 
+static void			handle_error(t_bool *error_seen, const char *arg)
+{
+	err_cmd(FORMAT, arg);
+	*error_seen = TRUE;
+}
+
 static t_bool		handle_ar_magic(int *magic, t_file f)
 {
 	if (!access_at(f, f.ptr + SARMAG))
@@ -42,6 +48,7 @@ static t_bool		handle_ar_magic(int *magic, t_file f)
 t_bool				handle_magic(int magic, t_file f, const char *arg)
 {
 	t_bool			valid_file;
+	static t_bool	error_seen = FALSE;
 	unsigned long	i;
 
 	valid_file = FALSE;
@@ -62,7 +69,7 @@ t_bool				handle_magic(int magic, t_file f, const char *arg)
 		}
 		i++;
 	}
-	if (!valid_file)
-		err_cmd(FORMAT, arg);
+	if (!valid_file && !error_seen)
+		handle_error(&error_seen, arg);
 	return (valid_file);
 }

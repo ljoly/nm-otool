@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 16:30:39 by ljoly             #+#    #+#             */
-/*   Updated: 2019/01/03 14:07:33 by ljoly            ###   ########.fr       */
+/*   Updated: 2019/01/03 15:22:41 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,11 @@ t_bool					handle_arch(t_file f, const char *arg)
 	{
 		magic = *(uint32_t*)mach_o.ptr;
 		mach_o.size = ft_atoi(ar->ar_size);
+		if (!handle_magic_otool(magic, mach_o, arg, FALSE))
+			return (FALSE);
 		ar_name_size ? ft_printf("%s(%s):\n", arg,
 			(char*)ar + sizeof(struct ar_hdr)) :
 				ft_printf("%s(%s):\n", arg, ar->ar_name);
-		handle_magic_otool(magic, mach_o, arg, FALSE);
 		ar = (void*)ar + sizeof(struct ar_hdr) + ft_atoi(ar->ar_size);
 		if (!access_at(f, (void*)ar + sizeof(struct ar_hdr)))
 		{
