@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/06 15:57:52 by ljoly             #+#    #+#             */
-/*   Updated: 2019/01/03 15:31:56 by ljoly            ###   ########.fr       */
+/*   Updated: 2019/01/03 21:10:54 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_bool				handle_magic(int magic, t_file f, const char *arg)
 	valid_file = FALSE;
 	if (!handle_ar_magic(&magic, f))
 	{
-		err_cmd(FORMAT, arg);
+		handle_error(&error_seen, arg);
 		return (FALSE);
 	}
 	i = 0;

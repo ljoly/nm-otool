@@ -6,13 +6,38 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 16:30:39 by ljoly             #+#    #+#             */
-/*   Updated: 2019/01/03 20:31:17 by ljoly            ###   ########.fr       */
+/*   Updated: 2019/01/03 21:21:36 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
 #include "handle_magic.h"
 #include <ar.h>
+
+static void				get_name(t_file f, uint32_t ar_name_size,
+	struct ar_hdr *ar, const char *arg)
+{
+	char	*ptr;
+	int		i;
+
+	if (ar_name_size)
+		ft_printf("%s(%s):\n", arg, (char*)ar + sizeof(struct ar_hdr));
+	else
+	{
+		i = 0;
+		ptr = ar->ar_name + sizeof(ar->ar_name) - 1;
+		while (ft_isspace(*ptr))
+		{
+			if (!access_at(f, ptr))
+				break ;
+			ptr--;
+			i++;
+		}
+		ft_printf("\n%s(", arg);
+		ft_putnstr(ar->ar_name, sizeof(ar->ar_name) - i);
+		ft_putendl("):");
+	}
+}
 
 static uint32_t			get_ar_name_size(struct ar_hdr *ar)
 {
@@ -77,9 +102,10 @@ t_bool					handle_arch(t_file f, const char *arg)
 	{
 		magic = *(uint32_t*)mach_o.ptr;
 		mach_o.size = ft_atoi(ar->ar_size);
-		ar_name_size ? ft_printf("%s(%s):\n", arg,
-			(char*)ar + sizeof(struct ar_hdr)) :
-				ft_printf("%s(%s):\n", arg, ar->ar_name);
+		if ((void*)ar > f.ptr + SARMAG)
+		{
+			get_name(f, ar_name_size, ar, arg);
+		}
 		if (!handle_magic_otool(magic, mach_o, arg, FALSE))
 			return (FALSE);
 		ar = (void*)ar + sizeof(struct ar_hdr) + ft_atoi(ar->ar_size);
