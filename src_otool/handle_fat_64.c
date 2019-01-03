@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 15:04:04 by ljoly             #+#    #+#             */
-/*   Updated: 2019/01/03 16:04:52 by ljoly            ###   ########.fr       */
+/*   Updated: 2019/01/03 16:23:00 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 static void		print_name_o(t_fat_64 fat, const char *arg, char *cpu_type)
 {
 	if (fat.nfat_arch == 1)
-		ft_printf("%s:\n", arg, cpu_type);
+		ft_printf("%s:\n", arg);
 	else
 		ft_printf("%s (architecture %s):\n", arg, cpu_type);
 }
@@ -38,9 +38,9 @@ static t_bool	handle_cpu_type(t_file f, t_fat_64 fat, const char *arg)
 	uint32_t	j;
 	char		*cpu_type;
 
-	i = 0;
+	i = -1;
 	fat.arch = f.ptr + sizeof(struct fat_header);
-	while (i < fat.nfat_arch)
+	while (++i < fat.nfat_arch)
 	{
 		if (!access_at(f, f.ptr + swp64(&fat.arch->offset, f.swp)))
 			return (FALSE);
@@ -57,17 +57,19 @@ static t_bool	handle_cpu_type(t_file f, t_fat_64 fat, const char *arg)
 		if (!handle_magic_otool(fat.magic, fat.mach_o, arg, FALSE))
 			return (FALSE);
 		fat.arch = (void*)fat.arch + sizeof(*fat.arch);
-		i++;
 	}
 	return (TRUE);
 }
 
-static void		init_data(t_file f, t_fat_64 *fat)
+static t_bool	init_data(t_file f, t_fat_64 *fat)
 {
 	fat->cpu_type_found = FALSE;
 	fat->header = (struct fat_header *)f.ptr;
 	fat->nfat_arch = swp32(&fat->header->nfat_arch, f.swp);
 	fat->arch = f.ptr + sizeof(*fat->header);
+	if (!access_at(f, f.ptr + sizeof(struct fat_header)))
+		return (FALSE);
+	return (TRUE);
 }
 
 t_bool			handle_fat_64(t_file f, const char *arg)
@@ -75,8 +77,7 @@ t_bool			handle_fat_64(t_file f, const char *arg)
 	t_fat_64	fat;
 	uint32_t	i;
 
-	init_data(f, &fat);
-	if (!access_at(f, f.ptr + sizeof(*fat.header)))
+	if (!init_data(f, &fat))
 		return (FALSE);
 	i = -1;
 	while (++i < fat.nfat_arch)
