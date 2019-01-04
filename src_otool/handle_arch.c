@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 16:30:39 by ljoly             #+#    #+#             */
-/*   Updated: 2019/01/03 21:21:36 by ljoly            ###   ########.fr       */
+/*   Updated: 2019/01/04 11:49:35 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,9 +110,7 @@ t_bool					handle_arch(t_file f, const char *arg)
 			return (FALSE);
 		ar = (void*)ar + sizeof(struct ar_hdr) + ft_atoi(ar->ar_size);
 		if (!access_at(f, (void*)ar + sizeof(struct ar_hdr)))
-		{
 			break ;
-		}
 		ar_name_size = get_ar_name_size(ar);
 		mach_o.ptr = (void*)ar + sizeof(struct ar_hdr) + ar_name_size;
 	}

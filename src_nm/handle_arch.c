@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 16:30:39 by ljoly             #+#    #+#             */
-/*   Updated: 2019/01/03 21:21:38 by ljoly            ###   ########.fr       */
+/*   Updated: 2019/01/04 11:49:27 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ static struct ar_hdr	*init_data(t_file f, uint32_t *ar_name_size,
 	*ar_name_size = get_ar_name_size(ar);
 	if (!(mach_o->ptr = get_first_o(f, &ar, ar_name_size)))
 		return (NULL);
-
 	return (ar);
 }
 
@@ -111,9 +110,7 @@ t_bool					handle_arch(t_file f, const char *arg)
 			return (FALSE);
 		ar = (void*)ar + sizeof(struct ar_hdr) + ft_atoi(ar->ar_size);
 		if (!access_at(f, (void*)ar + sizeof(struct ar_hdr)))
-		{
 			break ;
-		}
 		ar_name_size = get_ar_name_size(ar);
 		mach_o.ptr = (void*)ar + sizeof(struct ar_hdr) + ar_name_size;
 	}
