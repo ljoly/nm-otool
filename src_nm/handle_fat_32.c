@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 19:31:58 by ljoly             #+#    #+#             */
-/*   Updated: 2019/01/03 16:16:04 by ljoly            ###   ########.fr       */
+/*   Updated: 2019/01/28 21:34:13 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ static t_bool	handle_cpu_type(t_file f, t_fat_32 fat, const char *arg)
 				cpu_type = g_cpu32[j].name;
 		}
 		fat.mach_o = get_mach_o_file(f.ptr, fat.arch, f.swp);
+		if (!access_at(f, fat.mach_o.ptr + fat.mach_o.size))
+			return (FALSE);
 		fat.magic = *(int *)fat.mach_o.ptr;
 		print_name_o(fat, arg, cpu_type);
 		if (!handle_magic(fat.magic, fat.mach_o, arg))
@@ -88,6 +90,8 @@ t_bool			handle_fat_32(t_file f, const char *arg)
 			if (!access_at(f, f.ptr + swp32(&fat.arch->offset, f.swp)))
 				return (FALSE);
 			fat.mach_o = get_mach_o_file(f.ptr, fat.arch, f.swp);
+			if (!access_at(f, fat.mach_o.ptr + fat.mach_o.size))
+				return (FALSE);
 			fat.magic = *(int *)fat.mach_o.ptr;
 			if (!handle_magic(fat.magic, fat.mach_o, arg))
 				return (FALSE);
