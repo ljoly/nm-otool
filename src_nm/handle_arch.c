@@ -6,7 +6,7 @@
 /*   By: ljoly <ljoly@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 16:30:39 by ljoly             #+#    #+#             */
-/*   Updated: 2019/01/04 11:49:27 by ljoly            ###   ########.fr       */
+/*   Updated: 2019/01/29 01:00:32 by ljoly            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ t_bool					handle_arch(t_file f, const char *arg)
 	{
 		magic = *(uint32_t*)mach_o.ptr;
 		mach_o.size = ft_atoi(ar->ar_size);
+		if (!access_at(f, mach_o.ptr + mach_o.size - ar_name_size - sizeof(struct ar_hdr)))
+			return (FALSE);
 		if ((void*)ar > f.ptr + SARMAG)
 		{
 			get_name(f, ar_name_size, ar, arg);
